@@ -1,0 +1,43 @@
+{% extends 'calculator/base.html' %}
+
+{% block title %}Dashboard - Betting Tool{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-800 mb-4">📊 Analytics Dashboard</h1>
+    <p class="text-gray-600 mb-6">
+        Detailed performance analytics. This feature is coming soon!
+    </p>
+
+    <div class="bg-white rounded-lg shadow p-8 text-center">
+        <div class="text-6xl mb-4">📈</div>
+        <h2 class="text-xl font-bold text-gray-800 mb-2">Coming Soon</h2>
+        <p class="text-gray-500">
+            We're building detailed analytics to help you track your performance.
+        </p>
+        <div class="mt-6">
+            <a href="/" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                <i class="fas fa-chart-simple mr-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="mt-6 bg-gray-50 rounded-lg shadow p-6">
+        <h3 class="font-bold text-gray-800 mb-4">📊 Your Stats (Coming Soon)</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="bg-white p-3 rounded shadow">
+                <p class="text-xs text-gray-500">Win Rate</p>
+                <p class="text-2xl font-bold">0%</p>
+            </div>
+            <div class="bg-white p-3 rounded shadow">
+                <p class="text-xs text-gray-500">Total Profit</p>
+                <p class="text-2xl font-bold">₦0</p>
+            </div>
+            <div class="bg-white p-3 rounded shadow">
+                <p class="text-xs text-gray-500">Best Streak</p>
+                <p class="text-2xl font-bold">0</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
