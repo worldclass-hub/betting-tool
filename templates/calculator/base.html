@@ -483,7 +483,7 @@
         }
 
         /* ============================================================
-           NAVIGATION - Single row with VISIBLE CUTOFF + SMOOTH SLIDING
+           NAVIGATION - HEADER ALLOWED TO STRETCH
            ============================================================ */
         .nav-wrapper {
             position: relative;
@@ -503,9 +503,6 @@
             scrollbar-width: none;
             -ms-overflow-style: none;
             scroll-behavior: smooth;
-            /* Enable momentum scrolling on iOS */
-            -webkit-overflow-scrolling: touch;
-            /* Allow content to scroll freely */
             overscroll-behavior-x: contain;
         }
         .nav-links::-webkit-scrollbar {
@@ -638,7 +635,7 @@
                 ============================================================ -->
                 <div class="main-content-container py-4 md:py-6">
                     
-                    <!-- HEADER / NAVIGATION -->
+                    <!-- HEADER / NAVIGATION - HEADER ALLOWED TO STRETCH -->
                     <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
                         <a href="/" class="flex items-center gap-3 flex-shrink-0">
                             <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png" 
@@ -814,7 +811,6 @@
                         }
                     }
 
-                    // Smooth scroll detection - hide fade when user scrolls to end
                     nav.addEventListener('scroll', function() {
                         const maxScrollLeft = nav.scrollWidth - nav.clientWidth;
                         const currentScroll = nav.scrollLeft;
@@ -826,7 +822,6 @@
                         }
                     }, { passive: true });
 
-                    // Check on load and resize
                     updateFadeHint();
                     window.addEventListener('resize', updateFadeHint);
                     
