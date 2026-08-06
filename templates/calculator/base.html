@@ -386,8 +386,15 @@
         }
 
         /* ============================================================
-           NAVIGATION - Single row on mobile
+           NAVIGATION - Single row with VISIBLE CUTOFF on mobile
            ============================================================ */
+        .nav-wrapper {
+            position: relative;
+            flex: 1;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
         .nav-links {
             display: flex;
             flex-wrap: nowrap;
@@ -396,6 +403,7 @@
             -webkit-overflow-scrolling: touch;
             padding: 2px 0;
             scrollbar-width: none;
+            -ms-overflow-style: none;
         }
         .nav-links::-webkit-scrollbar {
             display: none;
@@ -420,10 +428,26 @@
             background: #eff6ff;
         }
 
-        @media (max-width: 480px) {
-            .nav-link {
-                font-size: 0.7rem;
-                padding: 4px 10px;
+        /* ============================================================
+           VISUAL CUTOFF + FADE - Shows more content exists
+           ============================================================ */
+        .nav-fade-hint {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            pointer-events: none;
+            background: linear-gradient(to left, #f0f4f8 15%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 8px;
+        }
+        
+        /* Only show on mobile when content overflows */
+        @media (max-width: 768px) {
+            .nav-fade-hint {
+                opacity: 0.85;
             }
         }
 
@@ -470,7 +494,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         
         <!-- ============================================================
-        HEADER / NAVIGATION - With Image from Supabase + Title
+        HEADER / NAVIGATION - With Visual Cutoff + Fade
         ============================================================ -->
         <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
             <a href="/" class="flex items-center gap-3 flex-shrink-0">
@@ -486,16 +510,21 @@
                 </span>
             </a>
             
-            <nav class="nav-links flex-1 md:flex-initial">
-                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a>
-                <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">Calculator</a>
-                <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">Bet Log</a>
-                <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">Analysis</a>
-            </nav>
+            <!-- Navigation with visual cutoff hint -->
+            <div class="nav-wrapper flex-1 md:flex-initial">
+                <nav class="nav-links" id="mainNav">
+                    <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a>
+                    <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">Calculator</a>
+                    <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">Bet Log</a>
+                    <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">Analysis</a>
+                </nav>
+                <!-- Fade hint on the right edge -->
+                <div class="nav-fade-hint" id="navFadeHint"></div>
+            </div>
         </header>
 
         <!-- ============================================================
-        TOAST MESSAGES - TOP CENTER - POWERFUL & RESPONSIVE
+        TOAST MESSAGES - TOP CENTER
         ============================================================ -->
         <div class="toast-container" id="toastContainer">
             {% if messages %}
@@ -568,9 +597,43 @@
                         }
                     });
                 });
-            });
 
-            console.log('✅ Betting Tool loaded!');
+                // ============================================================
+                // FADE HINT - Shows on mobile when nav is scrollable
+                // ============================================================
+                const nav = document.getElementById('mainNav');
+                const fadeHint = document.getElementById('navFadeHint');
+
+                if (nav && fadeHint) {
+                    function updateFadeHint() {
+                        const isScrollable = nav.scrollWidth > nav.clientWidth;
+                        const isMobile = window.innerWidth <= 768;
+                        
+                        if (isScrollable && isMobile) {
+                            fadeHint.style.display = 'block';
+                            fadeHint.style.opacity = '0.85';
+                        } else {
+                            fadeHint.style.display = 'none';
+                        }
+                    }
+
+                    // Hide fade when user scrolls to the end
+                    nav.addEventListener('scroll', function() {
+                        const maxScrollLeft = nav.scrollWidth - nav.clientWidth;
+                        if (nav.scrollLeft >= maxScrollLeft - 1) {
+                            fadeHint.style.opacity = '0';
+                        } else {
+                            fadeHint.style.opacity = '0.85';
+                        }
+                    });
+
+                    // Check on load and resize
+                    updateFadeHint();
+                    window.addEventListener('resize', updateFadeHint);
+                }
+
+                console.log('✅ Betting Tool loaded!');
+            });
         })();
     </script>
     {% block extra_js %}{% endblock %}
