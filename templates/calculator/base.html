@@ -483,51 +483,44 @@
         }
 
         /* ============================================================
-           NAVIGATION - SMOOTH SLIDING WITHOUT RESTRICTION
+           NAVIGATION - Single row with VISIBLE CUTOFF + SMOOTH SLIDING
            ============================================================ */
         .nav-wrapper {
             position: relative;
             flex: 1;
             max-width: 100%;
             overflow: hidden;
-            -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
-            mask-image: linear-gradient(to right, black 85%, transparent 100%);
         }
 
         .nav-links {
             display: flex;
             flex-wrap: nowrap;
-            gap: 6px;
+            gap: 4px;
             overflow-x: auto;
+            overflow-y: visible;
             -webkit-overflow-scrolling: touch;
             padding: 4px 0 8px 0;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            /* Allow smooth scrolling with momentum */
             scroll-behavior: smooth;
+            /* Enable momentum scrolling on iOS */
             -webkit-overflow-scrolling: touch;
-            /* Ensure content can scroll freely */
-            overflow-x: auto;
-            overflow-y: visible;
+            /* Allow content to scroll freely */
+            overscroll-behavior-x: contain;
         }
         .nav-links::-webkit-scrollbar {
             display: none;
         }
         
-        /* Make sure nav items are not restricted */
         .nav-link {
             color: #64748b;
             transition: all 0.2s ease;
-            padding: 8px 14px;
+            padding: 6px 12px;
             border-radius: 8px;
             font-weight: 500;
             font-size: 0.8rem;
             white-space: nowrap;
             flex-shrink: 0;
-            /* Allow items to be spaced naturally */
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
         }
         .nav-link:hover {
             color: #1a202c;
@@ -546,13 +539,14 @@
             right: 0;
             top: 0;
             bottom: 0;
-            width: 40px;
+            width: 45px;
             pointer-events: none;
             background: linear-gradient(to left, #f0f4f8 15%, transparent 100%);
             opacity: 0;
             transition: opacity 0.4s ease;
             border-radius: 8px;
             display: none;
+            z-index: 5;
         }
         
         @media (max-width: 768px) {
@@ -610,27 +604,13 @@
             .main-content-container {
                 padding: 0 0.75rem;
             }
-        }
-        
-        /* Ensure nav items have proper spacing on mobile */
-        @media (max-width: 768px) {
             .nav-link {
-                padding: 6px 10px;
+                padding: 5px 10px;
                 font-size: 0.75rem;
             }
             .nav-links {
-                gap: 4px;
-                padding: 2px 0 6px 0;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .nav-link {
-                padding: 5px 8px;
-                font-size: 0.7rem;
-            }
-            .nav-links {
                 gap: 3px;
+                padding: 3px 0 6px 0;
             }
         }
     </style>
@@ -671,21 +651,13 @@
                             </span>
                         </a>
                         
-                        <!-- Navigation with smooth sliding -->
+                        <!-- Navigation with visual cutoff hint -->
                         <div class="nav-wrapper flex-1 md:flex-initial">
                             <nav class="nav-links" id="mainNav">
-                                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">
-                                    <i class="fas fa-chart-pie text-[10px] md:text-xs"></i> Dashboard
-                                </a>
-                                <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">
-                                    <i class="fas fa-calculator text-[10px] md:text-xs"></i> Calculator
-                                </a>
-                                <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">
-                                    <i class="fas fa-book text-[10px] md:text-xs"></i> Bet Log
-                                </a>
-                                <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">
-                                    <i class="fas fa-chart-line text-[10px] md:text-xs"></i> Analysis
-                                </a>
+                                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a>
+                                <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">Calculator</a>
+                                <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">Bet Log</a>
+                                <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">Analysis</a>
                             </nav>
                             <div class="nav-fade-hint" id="navFadeHint"></div>
                         </div>
@@ -718,7 +690,7 @@
                         {% block content %}{% endblock %}
                     </main>
 
-                    <!-- FOOTER - Stays at bottom -->
+                    <!-- FOOTER - Stays at bottom, DOES NOT STRETCH -->
                     <footer class="page-footer mt-12 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
                         <p>© 2026 Betting Tool. <span class="text-gray-400">Bet with your head, not your heart.</span></p>
                     </footer>
@@ -730,7 +702,7 @@
     </div>
 
     <!-- ============================================================
-    JAVASCRIPT - ROCK SOLID SCROLL + NAV SLIDING
+    JAVASCRIPT - ROCK SOLID SCROLL + UI
     ============================================================ -->
     <script>
         (function() {
@@ -826,9 +798,6 @@
                     });
                 });
 
-                // ============================================================
-                // NAV SLIDING - NO RESTRICTION
-                // ============================================================
                 const nav = document.getElementById('mainNav');
                 const fadeHint = document.getElementById('navFadeHint');
 
@@ -845,12 +814,11 @@
                         }
                     }
 
-                    // When user scrolls the nav, fade the hint
+                    // Smooth scroll detection - hide fade when user scrolls to end
                     nav.addEventListener('scroll', function() {
                         const maxScrollLeft = nav.scrollWidth - nav.clientWidth;
                         const currentScroll = nav.scrollLeft;
                         
-                        // If scrolled to the end, hide fade hint
                         if (currentScroll >= maxScrollLeft - 2) {
                             fadeHint.style.opacity = '0';
                         } else {
@@ -858,22 +826,14 @@
                         }
                     }, { passive: true });
 
-                    // Enable smooth scrolling with momentum on mobile
-                    nav.style.webkitOverflowScrolling = 'touch';
-                    nav.style.overflowX = 'auto';
-                    nav.style.scrollBehavior = 'smooth';
-
-                    // Initial check
+                    // Check on load and resize
                     updateFadeHint();
                     window.addEventListener('resize', updateFadeHint);
                     
-                    // Also check after any layout changes
-                    if (window.ResizeObserver) {
-                        const resizeObserver = new ResizeObserver(function() {
-                            updateFadeHint();
-                        });
-                        resizeObserver.observe(nav);
-                    }
+                    // Ensure smooth scrolling on mobile
+                    nav.style.webkitOverflowScrolling = 'touch';
+                    nav.style.overflowX = 'auto';
+                    nav.style.overflowY = 'visible';
                 }
 
                 console.log('✅ Betting Tool loaded with rock solid scroll and smooth nav sliding!');
