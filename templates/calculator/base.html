@@ -141,51 +141,50 @@
         }
 
         /* ============================================================
-           FLOATING HOME BUTTON - Top Left (Small)
+           FLOATING ADMIN BUTTON - Moved UP slightly (bottom: 80px)
            ============================================================ */
-        .float-home {
+        .float-admin {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            bottom: 80px;
+            right: 24px;
             z-index: 999;
-            background: rgba(37, 99, 235, 0.9);
-            backdrop-filter: blur(8px);
+            background: #2563eb;
             color: white;
-            width: 42px;
-            height: 42px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
-            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.3);
+            font-size: 1.25rem;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: none;
             cursor: pointer;
             text-decoration: none;
         }
-        .float-home:hover {
+        .float-admin:hover {
             transform: scale(1.08);
-            background: rgba(29, 78, 216, 0.95);
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.45);
+            background: #1d4ed8;
         }
-        .float-home:active {
+        .float-admin:active {
             transform: scale(0.92);
         }
-        .float-home i {
+        .float-admin i {
             filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
         }
 
-        /* Tooltip for home button */
-        .float-home::after {
-            content: "Home";
+        /* Tooltip for floating button */
+        .float-admin::after {
+            content: "Admin Panel";
             position: absolute;
-            left: 52px;
+            right: 66px;
             background: #1e293b;
             color: white;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 6px;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             font-weight: 500;
             white-space: nowrap;
             opacity: 0;
@@ -194,21 +193,31 @@
             pointer-events: none;
             letter-spacing: 0.3px;
         }
-        .float-home:hover::after {
+        .float-admin:hover::after {
             opacity: 1;
             transform: translateX(0);
         }
 
         @media (max-width: 640px) {
-            .float-home {
-                width: 36px;
-                height: 36px;
-                font-size: 0.85rem;
-                top: 14px;
-                left: 14px;
+            .float-admin {
+                width: 50px;
+                height: 50px;
+                font-size: 1.1rem;
+                bottom: 70px;
+                right: 18px;
             }
-            .float-home::after {
+            .float-admin::after {
                 display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .float-admin {
+                bottom: 65px;
+                right: 16px;
+                width: 48px;
+                height: 48px;
+                font-size: 1rem;
             }
         }
 
@@ -272,77 +281,6 @@
         }
         .btn-secondary:hover {
             background: #e2e8f0;
-        }
-
-        /* ============================================================
-           FLOATING ADMIN BUTTON - Bottom Right
-           ============================================================ */
-        .float-admin {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 999;
-            background: #2563eb;
-            color: white;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .float-admin:hover {
-            transform: scale(1.08);
-            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.45);
-            background: #1d4ed8;
-        }
-        .float-admin:active {
-            transform: scale(0.92);
-        }
-        .float-admin i {
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
-        }
-
-        /* Tooltip for floating button */
-        .float-admin::after {
-            content: "Admin Panel";
-            position: absolute;
-            right: 66px;
-            background: #1e293b;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateX(8px);
-            transition: all 0.25s ease;
-            pointer-events: none;
-            letter-spacing: 0.3px;
-        }
-        .float-admin:hover::after {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        @media (max-width: 640px) {
-            .float-admin {
-                width: 50px;
-                height: 50px;
-                font-size: 1.1rem;
-                bottom: 18px;
-                right: 18px;
-            }
-            .float-admin::after {
-                display: none;
-            }
         }
 
         /* ============================================================
@@ -691,11 +629,6 @@
     <!-- Stiff Bottom Boundary - ONLY AT BOTTOM -->
     <div id="footerBoundary" class="footer-boundary"></div>
 
-    <!-- FLOATING HOME BUTTON - Top Left (Small) -->
-    <a href="/" class="float-home" title="Go to Home">
-        <i class="fas fa-home"></i>
-    </a>
-
     <!-- MAIN WRAPPER - Pushes footer to bottom -->
     <div class="page-wrapper">
         
@@ -749,7 +682,7 @@
         </div>
 
         <!-- ============================================================
-        FLOATING ADMIN BUTTON - Bottom Right
+        FLOATING ADMIN BUTTON - Moved UP (bottom: 80px)
         ============================================================ -->
         <a href="/admin/" class="float-admin" title="Go to Admin Panel">
             <i class="fas fa-user-shield"></i>
@@ -884,7 +817,7 @@
                     window.addEventListener('resize', updateFadeHint);
                 }
 
-                console.log('✅ Betting Tool loaded - Footer at bottom, Home button top left!');
+                console.log('✅ Betting Tool loaded - Footer at bottom, Admin button moved up!');
             });
         })();
     </script>
