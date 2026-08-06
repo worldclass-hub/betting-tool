@@ -28,30 +28,47 @@
         }
 
         /* ============================================================
-           TRANSPARENT SCROLLBAR - Clean & invisible
+           COMPLETELY HIDDEN SCROLLBAR - Nothing shows at all
            ============================================================ */
+        /* WebKit (Chrome, Safari, Edge) - COMPLETELY HIDDEN */
         body::-webkit-scrollbar {
-            width: 6px;
+            width: 0px;
+            height: 0px;
+            background: transparent;
+            display: none;
         }
         
         body::-webkit-scrollbar-track {
             background: transparent;
+            display: none;
         }
         
         body::-webkit-scrollbar-thumb {
-            background: rgba(37, 99, 235, 0.25);
-            border-radius: 10px;
-            transition: background 0.3s ease;
+            background: transparent;
+            display: none;
         }
         
         body::-webkit-scrollbar-thumb:hover {
-            background: rgba(37, 99, 235, 0.4);
+            background: transparent;
+            display: none;
         }
         
-        /* Firefox scrollbar */
+        /* Firefox - COMPLETELY HIDDEN */
         body {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(37, 99, 235, 0.25) transparent;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        /* Also hide for any scrollable containers */
+        .scrollable-container {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .scrollable-container::-webkit-scrollbar {
+            width: 0px;
+            height: 0px;
+            background: transparent;
+            display: none;
         }
 
         /* ============================================================
@@ -348,7 +365,7 @@
         }
 
         /* ============================================================
-           TABLE HORIZONTAL SCROLL
+           TABLE HORIZONTAL SCROLL - With hidden scrollbar
            ============================================================ */
         .table-scroll {
             width: 100%;
@@ -359,6 +376,15 @@
             overscroll-behavior-x: contain;
             padding: 0.25rem 0;
             margin: 0.5rem 0;
+            /* HIDE SCROLLBAR FOR TABLE SCROLL */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .table-scroll::-webkit-scrollbar {
+            width: 0px;
+            height: 0px;
+            background: transparent;
+            display: none;
         }
         
         .table-scroll table {
@@ -453,11 +479,14 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             padding: 2px 0;
+            /* HIDE SCROLLBAR FOR NAV */
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
         .nav-links::-webkit-scrollbar {
             display: none;
+            width: 0px;
+            height: 0px;
         }
         
         .nav-link {
@@ -732,7 +761,7 @@
                     window.addEventListener('resize', updateFadeHint);
                 }
 
-                console.log('✅ Betting Tool loaded - Bottom stiffness only!');
+                console.log('✅ Betting Tool loaded - Bottom stiffness only, no scrollbar visible!');
             });
         })();
     </script>
