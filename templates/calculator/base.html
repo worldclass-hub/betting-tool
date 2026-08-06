@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     
     <!-- Favicon - Sam Logo from Supabase -->
     <link rel="icon" type="image/png" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png">
@@ -16,14 +16,86 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f0f4f8;
-            color: #1a202c;
-            min-height: 100vh;
-            overflow-x: hidden;
+        /* ============================================================
+           ROCK SOLID SCROLL SYSTEM - NO RUBBER BAND
+           ============================================================ */
+        
+        /* 1. FIXED POSITION BODY - Prevents rubber band effect */
+        html, body {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overscroll-behavior: none;
+            touch-action: pan-y pinch-zoom;
         }
-
+        
+        /* 2. SINGLE SCROLL CONTAINER - Only this scrolls */
+        .scroll-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: none;
+            touch-action: pan-y;
+            scroll-behavior: smooth;
+            background: #f0f4f8;
+        }
+        
+        /* 3. TRANSPARENT SCROLLBAR - Clean & invisible */
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .scroll-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: rgba(37, 99, 235, 0.3);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+        .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(37, 99, 235, 0.5);
+        }
+        .scroll-container {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(37, 99, 235, 0.3) transparent;
+        }
+        
+        /* 4. MAIN WRAPPER - Pushes footer to bottom */
+        .main-wrapper {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #f0f4f8;
+        }
+        
+        /* 5. CONTENT WRAPPER - Takes remaining space, footer stays at bottom */
+        .content-wrapper {
+            flex: 1 0 auto;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 6. FOOTER - Stays at bottom, DOES NOT STRETCH */
+        .page-footer {
+            flex-shrink: 0;
+            width: 100%;
+            margin-top: auto;
+            background: transparent;
+        }
+        
         /* ============================================================
            CLEAN LIGHT CARD
            ============================================================ */
@@ -308,12 +380,14 @@
             overscroll-behavior-x: contain;
             padding: 0.25rem 0;
             margin: 0.5rem 0;
+            max-width: 100%;
         }
         
         .table-scroll table {
             width: 100%;
             min-width: 600px;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         
         .table-scroll th {
@@ -336,6 +410,29 @@
         }
         .table-scroll tr:hover td {
             background: #f8fafc;
+        }
+        
+        .scroll-hint {
+            display: none;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #9ca3af;
+            padding: 0.25rem 0 0.5rem 0;
+            animation: pulse-hint 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-hint {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .table-scroll table {
+                min-width: 550px;
+            }
+            .scroll-hint {
+                display: block;
+            }
         }
         
         @media (max-width: 640px) {
@@ -386,38 +483,51 @@
         }
 
         /* ============================================================
-           NAVIGATION - Single row with VISIBLE CUTOFF on mobile
+           NAVIGATION - SMOOTH SLIDING WITHOUT RESTRICTION
            ============================================================ */
         .nav-wrapper {
             position: relative;
             flex: 1;
             max-width: 100%;
             overflow: hidden;
+            -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+            mask-image: linear-gradient(to right, black 85%, transparent 100%);
         }
 
         .nav-links {
             display: flex;
             flex-wrap: nowrap;
-            gap: 4px;
+            gap: 6px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            padding: 2px 0;
+            padding: 4px 0 8px 0;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            /* Allow smooth scrolling with momentum */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            /* Ensure content can scroll freely */
+            overflow-x: auto;
+            overflow-y: visible;
         }
         .nav-links::-webkit-scrollbar {
             display: none;
         }
         
+        /* Make sure nav items are not restricted */
         .nav-link {
             color: #64748b;
             transition: all 0.2s ease;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 8px;
             font-weight: 500;
             font-size: 0.8rem;
             white-space: nowrap;
             flex-shrink: 0;
+            /* Allow items to be spaced naturally */
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
         .nav-link:hover {
             color: #1a202c;
@@ -442,17 +552,18 @@
             opacity: 0;
             transition: opacity 0.4s ease;
             border-radius: 8px;
+            display: none;
         }
         
-        /* Only show on mobile when content overflows */
         @media (max-width: 768px) {
             .nav-fade-hint {
+                display: block;
                 opacity: 0.85;
             }
         }
 
         /* ============================================================
-           HEADER LOGO IMAGE - From Supabase
+           HEADER LOGO IMAGE
            ============================================================ */
         .header-logo-img {
             width: 44px;
@@ -486,90 +597,204 @@
             min-height: 44px;
             min-width: 44px;
         }
+        
+        /* Main content container - keeps content within bounds */
+        .main-content-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            width: 100%;
+        }
+        
+        @media (max-width: 640px) {
+            .main-content-container {
+                padding: 0 0.75rem;
+            }
+        }
+        
+        /* Ensure nav items have proper spacing on mobile */
+        @media (max-width: 768px) {
+            .nav-link {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+            .nav-links {
+                gap: 4px;
+                padding: 2px 0 6px 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-link {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+            .nav-links {
+                gap: 3px;
+            }
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+    <!-- ============================================================
+    SINGLE SCROLL CONTAINER
+    ============================================================ -->
+    <div class="scroll-container" id="scrollContainer">
         
         <!-- ============================================================
-        HEADER / NAVIGATION - With Visual Cutoff + Fade
+        MAIN WRAPPER
         ============================================================ -->
-        <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
-            <a href="/" class="flex items-center gap-3 flex-shrink-0">
-                <!-- Image from Supabase -->
-                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png" 
-                     alt="Sam" 
-                     class="header-logo-img"
-                     loading="lazy">
-                <!-- Title -->
-                <span class="text-xl md:text-2xl font-extrabold tracking-tight text-gray-800">
-                    <span class="text-blue-600">Betting</span>
-                    <span>Tool</span>
-                </span>
-            </a>
+        <div class="main-wrapper">
             
-            <!-- Navigation with visual cutoff hint -->
-            <div class="nav-wrapper flex-1 md:flex-initial">
-                <nav class="nav-links" id="mainNav">
-                    <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a>
-                    <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">Calculator</a>
-                    <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">Bet Log</a>
-                    <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">Analysis</a>
-                </nav>
-                <!-- Fade hint on the right edge -->
-                <div class="nav-fade-hint" id="navFadeHint"></div>
-            </div>
-        </header>
+            <!-- ============================================================
+            CONTENT WRAPPER
+            ============================================================ -->
+            <div class="content-wrapper">
+                
+                <!-- ============================================================
+                MAIN CONTENT CONTAINER
+                ============================================================ -->
+                <div class="main-content-container py-4 md:py-6">
+                    
+                    <!-- HEADER / NAVIGATION -->
+                    <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
+                        <a href="/" class="flex items-center gap-3 flex-shrink-0">
+                            <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png" 
+                                 alt="Sam" 
+                                 class="header-logo-img"
+                                 loading="lazy">
+                            <span class="text-xl md:text-2xl font-extrabold tracking-tight text-gray-800">
+                                <span class="text-blue-600">Betting</span>
+                                <span>Tool</span>
+                            </span>
+                        </a>
+                        
+                        <!-- Navigation with smooth sliding -->
+                        <div class="nav-wrapper flex-1 md:flex-initial">
+                            <nav class="nav-links" id="mainNav">
+                                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                                    <i class="fas fa-chart-pie text-[10px] md:text-xs"></i> Dashboard
+                                </a>
+                                <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">
+                                    <i class="fas fa-calculator text-[10px] md:text-xs"></i> Calculator
+                                </a>
+                                <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">
+                                    <i class="fas fa-book text-[10px] md:text-xs"></i> Bet Log
+                                </a>
+                                <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">
+                                    <i class="fas fa-chart-line text-[10px] md:text-xs"></i> Analysis
+                                </a>
+                            </nav>
+                            <div class="nav-fade-hint" id="navFadeHint"></div>
+                        </div>
+                    </header>
 
-        <!-- ============================================================
-        TOAST MESSAGES - TOP CENTER
-        ============================================================ -->
-        <div class="toast-container" id="toastContainer">
-            {% if messages %}
-                {% for message in messages %}
-                <div class="toast {% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
-                    <div class="toast-icon">
-                        <i class="fas {% if message.tags == 'success' %}fa-check{% elif message.tags == 'error' %}fa-exclamation{% else %}fa-info{% endif %}"></i>
+                    <!-- TOAST MESSAGES -->
+                    <div class="toast-container" id="toastContainer">
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="toast {% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
+                                <div class="toast-icon">
+                                    <i class="fas {% if message.tags == 'success' %}fa-check{% elif message.tags == 'error' %}fa-exclamation{% else %}fa-info{% endif %}"></i>
+                                </div>
+                                <div class="toast-content">{{ message }}</div>
+                                <button class="toast-close" onclick="this.closest('.toast').classList.add('hide'); setTimeout(() => this.closest('.toast').remove(), 500);">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
-                    <div class="toast-content">{{ message }}</div>
-                    <button class="toast-close" onclick="this.closest('.toast').classList.add('hide'); setTimeout(() => this.closest('.toast').remove(), 500);">
-                        <i class="fas fa-times"></i>
-                    </button>
+
+                    <!-- FLOATING ADMIN BUTTON -->
+                    <a href="/admin/" class="float-admin" title="Go to Admin Panel">
+                        <i class="fas fa-user-shield"></i>
+                    </a>
+
+                    <!-- MAIN CONTENT -->
+                    <main>
+                        {% block content %}{% endblock %}
+                    </main>
+
+                    <!-- FOOTER - Stays at bottom -->
+                    <footer class="page-footer mt-12 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
+                        <p>© 2026 Betting Tool. <span class="text-gray-400">Bet with your head, not your heart.</span></p>
+                    </footer>
+                    
                 </div>
-                {% endfor %}
-            {% endif %}
+                
+            </div>
         </div>
-
-        <!-- ============================================================
-        FLOATING ADMIN BUTTON - Bottom Right
-        ============================================================ -->
-        <a href="/admin/" class="float-admin" title="Go to Admin Panel">
-            <i class="fas fa-user-shield"></i>
-        </a>
-
-        <!-- ============================================================
-        MAIN CONTENT
-        ============================================================ -->
-        <main>
-            {% block content %}{% endblock %}
-        </main>
-
-        <!-- ============================================================
-        FOOTER
-        ============================================================ -->
-        <footer class="mt-12 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
-            <p>© 2026 Betting Tool. <span class="text-gray-400">Bet with your head, not your heart.</span></p>
-        </footer>
-        
     </div>
 
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT - ROCK SOLID SCROLL + NAV SLIDING
     ============================================================ -->
     <script>
         (function() {
+            // ============================================================
+            // ROCK SOLID SCROLL - NO RUBBER BAND EVER
+            // ============================================================
+            const scrollContainer = document.getElementById('scrollContainer');
+            
+            if (scrollContainer) {
+                let touchStartY = 0;
+                let touchStartScrollTop = 0;
+                
+                function enforceBoundaries() {
+                    if (!scrollContainer) return;
+                    
+                    const scrollTop = scrollContainer.scrollTop;
+                    const scrollHeight = scrollContainer.scrollHeight;
+                    const clientHeight = scrollContainer.clientHeight;
+                    
+                    if (scrollTop < 0) {
+                        scrollContainer.scrollTop = 0;
+                        return;
+                    }
+                    
+                    if (scrollTop + clientHeight > scrollHeight) {
+                        scrollContainer.scrollTop = Math.max(0, scrollHeight - clientHeight);
+                        return;
+                    }
+                }
+                
+                scrollContainer.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                    touchStartScrollTop = scrollContainer.scrollTop;
+                }, { passive: false });
+                
+                scrollContainer.addEventListener('touchmove', function(e) {
+                    const currentY = e.touches[0].clientY;
+                    const deltaY = currentY - touchStartY;
+                    const currentScrollTop = scrollContainer.scrollTop;
+                    const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+                    
+                    if (currentScrollTop <= 0 && deltaY > 0) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }, { passive: false });
+                
+                scrollContainer.addEventListener('scroll', enforceBoundaries);
+                window.addEventListener('resize', enforceBoundaries);
+                enforceBoundaries();
+                
+                if ('ontouchstart' in window) {
+                    scrollContainer.style.WebkitOverflowScrolling = 'touch';
+                }
+            }
+
+            // ============================================================
+            // TOAST DISMISS
+            // ============================================================
             function dismissToast(toast) {
                 if (!toast || !toast.parentNode) return;
                 toast.classList.add('hide');
@@ -580,6 +805,9 @@
                 }, 500);
             }
 
+            // ============================================================
+            // NAV FADE HINT - SMOOTH SLIDING
+            // ============================================================
             document.addEventListener('DOMContentLoaded', function() {
                 const toasts = document.querySelectorAll('.toast');
                 toasts.forEach(function(toast, index) {
@@ -599,7 +827,7 @@
                 });
 
                 // ============================================================
-                // FADE HINT - Shows on mobile when nav is scrollable
+                // NAV SLIDING - NO RESTRICTION
                 // ============================================================
                 const nav = document.getElementById('mainNav');
                 const fadeHint = document.getElementById('navFadeHint');
@@ -617,22 +845,38 @@
                         }
                     }
 
-                    // Hide fade when user scrolls to the end
+                    // When user scrolls the nav, fade the hint
                     nav.addEventListener('scroll', function() {
                         const maxScrollLeft = nav.scrollWidth - nav.clientWidth;
-                        if (nav.scrollLeft >= maxScrollLeft - 1) {
+                        const currentScroll = nav.scrollLeft;
+                        
+                        // If scrolled to the end, hide fade hint
+                        if (currentScroll >= maxScrollLeft - 2) {
                             fadeHint.style.opacity = '0';
                         } else {
                             fadeHint.style.opacity = '0.85';
                         }
-                    });
+                    }, { passive: true });
 
-                    // Check on load and resize
+                    // Enable smooth scrolling with momentum on mobile
+                    nav.style.webkitOverflowScrolling = 'touch';
+                    nav.style.overflowX = 'auto';
+                    nav.style.scrollBehavior = 'smooth';
+
+                    // Initial check
                     updateFadeHint();
                     window.addEventListener('resize', updateFadeHint);
+                    
+                    // Also check after any layout changes
+                    if (window.ResizeObserver) {
+                        const resizeObserver = new ResizeObserver(function() {
+                            updateFadeHint();
+                        });
+                        resizeObserver.observe(nav);
+                    }
                 }
 
-                console.log('✅ Betting Tool loaded!');
+                console.log('✅ Betting Tool loaded with rock solid scroll and smooth nav sliding!');
             });
         })();
     </script>
