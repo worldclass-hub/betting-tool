@@ -16,64 +16,65 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* ============================================================
-           ROCK SOLID SCROLL SYSTEM - NO RUBBER BAND EVER
-           ============================================================ */
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
+        body {
+            font-family: 'Inter', sans-serif;
             background: #f0f4f8;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overscroll-behavior: none;
-            touch-action: pan-y pinch-zoom;
-        }
-        
-        /* SINGLE SCROLL CONTAINER - Only this can scroll */
-        .scroll-container {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
+            color: #1a202c;
+            min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
-            background: #f0f4f8;
+            /* BODY SCROLLS FREELY - NO RESTRICTIONS */
+            overflow-y: auto;
             -webkit-overflow-scrolling: touch;
-            overscroll-behavior: none;
-            touch-action: pan-y;
-            scroll-behavior: smooth;
         }
-        
-        /* TRANSPARENT SCROLLBAR - Clean & invisible */
-        .scroll-container::-webkit-scrollbar {
+
+        /* ============================================================
+           TRANSPARENT SCROLLBAR - Clean & invisible
+           ============================================================ */
+        body::-webkit-scrollbar {
             width: 6px;
         }
         
-        .scroll-container::-webkit-scrollbar-track {
+        body::-webkit-scrollbar-track {
             background: transparent;
         }
         
-        .scroll-container::-webkit-scrollbar-thumb {
+        body::-webkit-scrollbar-thumb {
             background: rgba(37, 99, 235, 0.25);
             border-radius: 10px;
             transition: background 0.3s ease;
         }
         
-        .scroll-container::-webkit-scrollbar-thumb:hover {
+        body::-webkit-scrollbar-thumb:hover {
             background: rgba(37, 99, 235, 0.4);
         }
         
         /* Firefox scrollbar */
-        .scroll-container {
+        body {
             scrollbar-width: thin;
             scrollbar-color: rgba(37, 99, 235, 0.25) transparent;
         }
+
+        /* ============================================================
+           STIFF BOTTOM BOUNDARY - Prevents rubber band at bottom ONLY
+           ============================================================ */
+        .footer-boundary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2563eb, #1d4ed8, #2563eb);
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 2px;
+        }
         
+        .footer-boundary.visible {
+            opacity: 1;
+        }
+
         /* ============================================================
            CLEAN LIGHT CARD
            ============================================================ */
@@ -540,82 +541,80 @@
 </head>
 <body>
 
-    <!-- SINGLE SCROLL CONTAINER - Rock solid, no rubber band -->
-    <div class="scroll-container" id="scrollContainer">
+    <!-- Stiff Bottom Boundary - ONLY AT BOTTOM -->
+    <div id="footerBoundary" class="footer-boundary"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
-            
-            <!-- ============================================================
-            HEADER / NAVIGATION - With Visual Cutoff + Fade
-            ============================================================ -->
-            <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
-                <a href="/" class="flex items-center gap-3 flex-shrink-0">
-                    <!-- Image from Supabase -->
-                    <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png" 
-                         alt="Sam" 
-                         class="header-logo-img"
-                         loading="lazy">
-                    <!-- Title -->
-                    <span class="text-xl md:text-2xl font-extrabold tracking-tight text-gray-800">
-                        <span class="text-blue-600">Betting</span>
-                        <span>Tool</span>
-                    </span>
-                </a>
-                
-                <!-- Navigation with visual cutoff hint -->
-                <div class="nav-wrapper flex-1 md:flex-initial">
-                    <nav class="nav-links" id="mainNav">
-                        <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a>
-                        <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">Calculator</a>
-                        <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">Bet Log</a>
-                        <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">Analysis</a>
-                    </nav>
-                    <!-- Fade hint on the right edge -->
-                    <div class="nav-fade-hint" id="navFadeHint"></div>
-                </div>
-            </header>
-
-            <!-- ============================================================
-            TOAST MESSAGES - TOP CENTER
-            ============================================================ -->
-            <div class="toast-container" id="toastContainer">
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="toast {% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
-                        <div class="toast-icon">
-                            <i class="fas {% if message.tags == 'success' %}fa-check{% elif message.tags == 'error' %}fa-exclamation{% else %}fa-info{% endif %}"></i>
-                        </div>
-                        <div class="toast-content">{{ message }}</div>
-                        <button class="toast-close" onclick="this.closest('.toast').classList.add('hide'); setTimeout(() => this.closest('.toast').remove(), 500);">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    {% endfor %}
-                {% endif %}
-            </div>
-
-            <!-- ============================================================
-            FLOATING ADMIN BUTTON - Bottom Right
-            ============================================================ -->
-            <a href="/admin/" class="float-admin" title="Go to Admin Panel">
-                <i class="fas fa-user-shield"></i>
+        <!-- ============================================================
+        HEADER / NAVIGATION - With Visual Cutoff + Fade
+        ============================================================ -->
+        <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
+            <a href="/" class="flex items-center gap-3 flex-shrink-0">
+                <!-- Image from Supabase -->
+                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png" 
+                     alt="Sam" 
+                     class="header-logo-img"
+                     loading="lazy">
+                <!-- Title -->
+                <span class="text-xl md:text-2xl font-extrabold tracking-tight text-gray-800">
+                    <span class="text-blue-600">Betting</span>
+                    <span>Tool</span>
+                </span>
             </a>
-
-            <!-- ============================================================
-            MAIN CONTENT
-            ============================================================ -->
-            <main>
-                {% block content %}{% endblock %}
-            </main>
-
-            <!-- ============================================================
-            FOOTER
-            ============================================================ -->
-            <footer class="mt-12 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
-                <p>© 2026 Betting Tool. <span class="text-gray-400">Bet with your head, not your heart.</span></p>
-            </footer>
             
+            <!-- Navigation with visual cutoff hint -->
+            <div class="nav-wrapper flex-1 md:flex-initial">
+                <nav class="nav-links" id="mainNav">
+                    <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a>
+                    <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">Calculator</a>
+                    <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">Bet Log</a>
+                    <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">Analysis</a>
+                </nav>
+                <!-- Fade hint on the right edge -->
+                <div class="nav-fade-hint" id="navFadeHint"></div>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        TOAST MESSAGES - TOP CENTER
+        ============================================================ -->
+        <div class="toast-container" id="toastContainer">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="toast {% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
+                    <div class="toast-icon">
+                        <i class="fas {% if message.tags == 'success' %}fa-check{% elif message.tags == 'error' %}fa-exclamation{% else %}fa-info{% endif %}"></i>
+                    </div>
+                    <div class="toast-content">{{ message }}</div>
+                    <button class="toast-close" onclick="this.closest('.toast').classList.add('hide'); setTimeout(() => this.closest('.toast').remove(), 500);">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
+
+        <!-- ============================================================
+        FLOATING ADMIN BUTTON - Bottom Right
+        ============================================================ -->
+        <a href="/admin/" class="float-admin" title="Go to Admin Panel">
+            <i class="fas fa-user-shield"></i>
+        </a>
+
+        <!-- ============================================================
+        MAIN CONTENT
+        ============================================================ -->
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
+        <footer class="mt-12 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
+            <p>© 2026 Betting Tool. <span class="text-gray-400">Bet with your head, not your heart.</span></p>
+        </footer>
         
     </div>
 
@@ -625,83 +624,53 @@
     <script>
         (function() {
             // ============================================================
-            // ROCK SOLID SCROLL - NO RUBBER BAND EVER
+            // STIFF BOTTOM BOUNDARY - Prevents rubber band at bottom ONLY
             // ============================================================
-            const scrollContainer = document.getElementById('scrollContainer');
+            const footerBoundary = document.getElementById('footerBoundary');
             
-            if (scrollContainer) {
-                let touchStartY = 0;
-                let touchStartScrollTop = 0;
-                
-                // Store scroll positions
-                let scrollTop = 0;
-                let scrollHeight = 0;
-                let clientHeight = 0;
-                
-                // Function to enforce scroll boundaries - NO RUBBER BAND
-                function enforceBoundaries() {
-                    if (!scrollContainer) return;
+            if (footerBoundary) {
+                window.addEventListener('scroll', function() {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollHeight = document.documentElement.scrollHeight;
+                    const clientHeight = document.documentElement.clientHeight;
                     
-                    scrollTop = scrollContainer.scrollTop;
-                    scrollHeight = scrollContainer.scrollHeight;
-                    clientHeight = scrollContainer.clientHeight;
+                    const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
                     
-                    // Hard stop at top
-                    if (scrollTop < 0) {
-                        scrollContainer.scrollTop = 0;
-                        return;
+                    if (distanceFromBottom <= 50 && distanceFromBottom > 0) {
+                        footerBoundary.classList.add('visible');
+                    } else {
+                        footerBoundary.classList.remove('visible');
                     }
                     
-                    // Hard stop at bottom
-                    if (scrollTop + clientHeight > scrollHeight) {
-                        scrollContainer.scrollTop = Math.max(0, scrollHeight - clientHeight);
-                        return;
-                    }
-                }
-                
-                // Prevent any rubber band effect on touch move
-                scrollContainer.addEventListener('touchstart', function(e) {
-                    touchStartY = e.touches[0].clientY;
-                    touchStartScrollTop = scrollContainer.scrollTop;
-                }, { passive: false });
-                
-                scrollContainer.addEventListener('touchmove', function(e) {
-                    const currentY = e.touches[0].clientY;
-                    const deltaY = currentY - touchStartY;
-                    const currentScrollTop = scrollContainer.scrollTop;
-                    const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
-                    
-                    // If at top and trying to pull down - PREVENT
-                    if (currentScrollTop <= 0 && deltaY > 0) {
-                        e.preventDefault();
-                        return false;
-                    }
-                    
-                    // If at bottom and trying to pull up - PREVENT
-                    if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
-                        e.preventDefault();
-                        return false;
+                    // HARD STOP AT BOTTOM - Prevents rubber band
+                    if (scrollTop + clientHeight >= scrollHeight - 1) {
+                        // Force stop at bottom - no rubber band
+                        window.scrollTo(0, scrollHeight - clientHeight);
                     }
                 }, { passive: false });
-                
-                // Enforce boundaries on scroll
-                scrollContainer.addEventListener('scroll', function() {
-                    enforceBoundaries();
-                });
-                
-                // Enforce boundaries on resize
-                window.addEventListener('resize', function() {
-                    enforceBoundaries();
-                });
-                
-                // Initial enforcement
-                enforceBoundaries();
-                
-                // iOS specific fixes
-                if ('ontouchstart' in window) {
-                    scrollContainer.style.WebkitOverflowScrolling = 'touch';
-                }
             }
+
+            // Prevent touch pull at bottom ONLY
+            let touchStartY = 0;
+            let touchStartScrollTop = 0;
+            
+            document.addEventListener('touchstart', function(e) {
+                touchStartY = e.touches[0].clientY;
+                touchStartScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            }, { passive: false });
+            
+            document.addEventListener('touchmove', function(e) {
+                const currentY = e.touches[0].clientY;
+                const deltaY = currentY - touchStartY;
+                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const maxScrollTop = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                
+                // If at bottom and trying to pull up - PREVENT (rubber band at bottom)
+                if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
+                    e.preventDefault();
+                    return false;
+                }
+            }, { passive: false });
 
             function dismissToast(toast) {
                 if (!toast || !toast.parentNode) return;
@@ -750,7 +719,6 @@
                         }
                     }
 
-                    // Hide fade when user scrolls to the end
                     nav.addEventListener('scroll', function() {
                         const maxScrollLeft = nav.scrollWidth - nav.clientWidth;
                         if (nav.scrollLeft >= maxScrollLeft - 1) {
@@ -760,12 +728,11 @@
                         }
                     });
 
-                    // Check on load and resize
                     updateFadeHint();
                     window.addEventListener('resize', updateFadeHint);
                 }
 
-                console.log('✅ Betting Tool loaded with rock solid scrolling!');
+                console.log('✅ Betting Tool loaded - Bottom stiffness only!');
             });
         })();
     </script>
