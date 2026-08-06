@@ -2,250 +2,574 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>{% block title %}Betting Tool - Value Calculator{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    
+    <!-- Favicon - Sam Logo -->
+    <link rel="icon" type="image/png" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png">
+    <link rel="apple-touch-icon" href="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png">
+    
+    <title>{% block title %}Betting Tool{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- ==================== ROCK SOLID SCROLL SYSTEM ==================== -->
     <style>
-        /* 1. FIXED POSITION BODY - Prevents any body movement */
-        html, body {
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            overscroll-behavior: none;
-            touch-action: pan-y pinch-zoom;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* 2. SINGLE SCROLL CONTAINER - Only this can scroll internally */
-        .scroll-container {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+            color: #1a202c;
+            min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: none;
-            touch-action: pan-y;
-            scroll-behavior: smooth;
         }
-        
-        /* 3. TRANSPARENT SCROLLBAR - Clean & invisible */
-        .scroll-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .scroll-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: rgba(59, 130, 246, 0.3);
-            border-radius: 10px;
-            transition: background 0.3s ease;
-        }
-        
-        .scroll-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(59, 130, 246, 0.5);
-        }
-        
-        /* Firefox scrollbar */
-        .scroll-container {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
-        }
-        
-        /* 4. MAIN WRAPPER */
-        .main-wrapper {
-            width: 100%;
-            min-height: 100%;
-            display: flex;
-            flex-direction: column;
-            background: #f3f4f6;
-        }
-        
-        /* 5. CONTENT WRAPPER - Pushes footer to bottom */
-        .content-wrapper {
-            flex: 1 0 auto;
-            width: 100%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* 6. FOOTER - Stays at bottom */
-        .page-footer {
-            flex-shrink: 0;
-            width: 100%;
-            margin-top: auto;
-        }
-        
+
         /* ============================================================
-           ORIGINAL STYLES
+           CLEAN LIGHT CARD
            ============================================================ */
-        .gradient-bg { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
-        .card-hover { transition: transform 0.2s; }
-        .card-hover:hover { transform: translateY(-2px); }
-        .container-custom { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ============================================================
+           BUTTONS - Light & Clean
+           ============================================================ */
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 44px;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 44px;
+        }
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* ============================================================
+           FLOATING ADMIN BUTTON - Bottom Right
+           ============================================================ */
+        .float-admin {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            background: #2563eb;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .float-admin:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.45);
+            background: #1d4ed8;
+        }
+        .float-admin:active {
+            transform: scale(0.92);
+        }
+        .float-admin i {
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+        }
+
+        /* Tooltip for floating button */
+        .float-admin::after {
+            content: "Admin Panel";
+            position: absolute;
+            right: 66px;
+            background: #1e293b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(8px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+            letter-spacing: 0.3px;
+        }
+        .float-admin:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @media (max-width: 640px) {
+            .float-admin {
+                width: 50px;
+                height: 50px;
+                font-size: 1.1rem;
+                bottom: 18px;
+                right: 18px;
+            }
+            .float-admin::after {
+                display: none;
+            }
+        }
+
+        /* ============================================================
+           TOAST NOTIFICATION - POWERFUL & RESPONSIVE
+           ============================================================ */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            width: auto;
+            max-width: 420px;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+            align-items: center;
+        }
+        
+        .toast {
+            background: #ffffff;
+            color: #1a202c;
+            padding: 14px 20px;
+            border-radius: 14px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.06);
+            font-size: 0.875rem;
+            border-left: 5px solid #2563eb;
+            animation: slideDown 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            pointer-events: auto;
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.98);
+        }
+        .toast.success { border-left-color: #22c55e; }
+        .toast.error { border-left-color: #ef4444; }
+        .toast.info { border-left-color: #2563eb; }
+        
+        .toast .toast-icon {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+        .toast.success .toast-icon {
+            background: #dcfce7;
+            color: #22c55e;
+        }
+        .toast.error .toast-icon {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+        .toast.info .toast-icon {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .toast .toast-content {
+            flex: 1;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1e293b;
+            line-height: 1.4;
+        }
+        
+        .toast .toast-close {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toast .toast-close:hover {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .toast.hide {
+            animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-40px) scale(0.96); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes fadeUp {
+            from { transform: translateY(0) scale(1); opacity: 1; }
+            to { transform: translateY(-30px) scale(0.96); opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .toast-container {
+                top: 12px;
+                max-width: 92%;
+                min-width: unset;
+                width: 92%;
+            }
+            .toast {
+                padding: 12px 16px;
+                font-size: 0.8rem;
+                border-radius: 12px;
+                gap: 10px;
+            }
+            .toast .toast-icon {
+                width: 24px;
+                height: 24px;
+                font-size: 0.7rem;
+            }
+            .toast .toast-content {
+                font-size: 0.78rem;
+            }
+            .toast .toast-close {
+                width: 24px;
+                height: 24px;
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .toast-container {
+                max-width: 400px;
+            }
+        }
+
+        /* ============================================================
+           TABLE HORIZONTAL SCROLL
+           ============================================================ */
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+            overscroll-behavior-x: contain;
+            padding: 0.25rem 0;
+            margin: 0.5rem 0;
+        }
+        
+        .table-scroll table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+        
+        .table-scroll th {
+            text-align: left;
+            padding: 0.75rem 0.5rem;
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            border-bottom: 2px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        
+        .table-scroll td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1e293b;
+        }
+        .table-scroll tr:hover td {
+            background: #f8fafc;
+        }
+        
+        @media (max-width: 640px) {
+            .table-scroll {
+                margin: 0.5rem -0.75rem;
+                padding: 0 0.75rem;
+                width: calc(100% + 1.5rem);
+            }
+            .table-scroll table {
+                min-width: 480px;
+                font-size: 0.7rem;
+            }
+            .table-scroll td,
+            .table-scroll th {
+                padding: 0.5rem 0.3rem;
+                white-space: nowrap;
+            }
+        }
+
+        /* ============================================================
+           INPUTS - Light
+           ============================================================ */
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            color: #1a202c;
+            font-size: 16px !important;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        input::placeholder, textarea::placeholder {
+            color: #94a3b8;
+        }
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 4px;
+        }
+
+        /* ============================================================
+           NAVIGATION - Single row on mobile
+           ============================================================ */
+        .nav-links {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 4px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 2px 0;
+            scrollbar-width: none;
+        }
+        .nav-links::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-link {
+            color: #64748b;
+            transition: all 0.2s ease;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .nav-link:hover {
+            color: #1a202c;
+            background: #f1f5f9;
+        }
+        .nav-link.active {
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        @media (max-width: 480px) {
+            .nav-link {
+                font-size: 0.7rem;
+                padding: 4px 10px;
+            }
+        }
+
+        /* ============================================================
+           HEADER LOGO IMAGE - Powerful & Professional
+           ============================================================ */
+        .header-logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2.5px solid #2563eb;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+        }
+        .header-logo-img:hover {
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
+            border-color: #1d4ed8;
+        }
+        @media (max-width: 640px) {
+            .header-logo-img {
+                width: 34px;
+                height: 34px;
+                border-width: 2px;
+            }
+        }
+
+        /* Touch targets */
+        button, a, input, select, textarea {
+            touch-action: manipulation;
+        }
+        button {
+            min-height: 44px;
+            min-width: 44px;
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <!-- ==================== SINGLE SCROLL CONTAINER ==================== -->
-    <div class="scroll-container" id="scrollContainer">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
         
-        <!-- ==================== MAIN WRAPPER ==================== -->
-        <div class="main-wrapper">
+        <!-- ============================================================
+        HEADER / NAVIGATION - With Image + Title
+        ============================================================ -->
+        <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
+            <a href="/" class="flex items-center gap-3 flex-shrink-0">
+                <!-- Image -->
+                <img src="/static/img/Sam Circle picture.png" 
+                     alt="Sam" 
+                     class="header-logo-img"
+                     loading="lazy">
+                <!-- Title -->
+                <span class="text-xl md:text-2xl font-extrabold tracking-tight text-gray-800">
+                    <span class="text-blue-600">Betting</span>
+                    <span>Tool</span>
+                </span>
+            </a>
             
-            <!-- ==================== CONTENT WRAPPER ==================== -->
-            <div class="content-wrapper">
-                
-                <!-- Navigation -->
-                <nav class="gradient-bg text-white shadow-lg">
-                    <div class="container-custom py-4">
-                        <div class="flex flex-wrap justify-between items-center gap-4">
-                            <a href="/" class="text-2xl font-bold">
-                                <i class="fas fa-calculator mr-2"></i>Betting Tool
-                            </a>
-                            <div class="flex flex-wrap gap-4">
-                                <a href="/" class="hover:text-gray-300 transition">Dashboard</a>
-                                <a href="/calculator/" class="hover:text-gray-300 transition">Calculator</a>
-                                <a href="/bet-log/" class="hover:text-gray-300 transition">Bet Log</a>
-                                <a href="/analysis/" class="hover:text-gray-300 transition">Analysis</a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+            <nav class="nav-links flex-1 md:flex-initial">
+                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a>
+                <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">Calculator</a>
+                <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">Bet Log</a>
+                <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">Analysis</a>
+            </nav>
+        </header>
 
-                <!-- Messages -->
-                {% if messages %}
-                <div class="container-custom mt-4">
-                    {% for message in messages %}
-                    <div class="p-4 rounded-lg {% if message.tags == 'success' %}bg-green-100 text-green-700 border border-green-300{% elif message.tags == 'error' %}bg-red-100 text-red-700 border border-red-300{% else %}bg-blue-100 text-blue-700 border border-blue-300{% endif %}">
-                        {{ message }}
+        <!-- ============================================================
+        TOAST MESSAGES - TOP CENTER - POWERFUL & RESPONSIVE
+        ============================================================ -->
+        <div class="toast-container" id="toastContainer">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="toast {% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
+                    <div class="toast-icon">
+                        <i class="fas {% if message.tags == 'success' %}fa-check{% elif message.tags == 'error' %}fa-exclamation{% else %}fa-info{% endif %}"></i>
                     </div>
-                    {% endfor %}
+                    <div class="toast-content">{{ message }}</div>
+                    <button class="toast-close" onclick="this.closest('.toast').classList.add('hide'); setTimeout(() => this.closest('.toast').remove(), 500);">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                {% endif %}
-
-                <!-- Main Content -->
-                <main class="container-custom py-8 flex-1">
-                    {% block content %}{% endblock %}
-                </main>
-
-                <!-- Footer - Stays at bottom -->
-                <footer class="page-footer gradient-bg text-white py-4 mt-8">
-                    <div class="container-custom text-center">
-                        <p class="text-sm">© 2026 Betting Tool. Bet with your head, not your heart.</p>
-                    </div>
-                </footer>
-                
-            </div>
+                {% endfor %}
+            {% endif %}
         </div>
+
+        <!-- ============================================================
+        FLOATING ADMIN BUTTON - Bottom Right
+        ============================================================ -->
+        <a href="/admin/" class="float-admin" title="Go to Admin Panel">
+            <i class="fas fa-user-shield"></i>
+        </a>
+
+        <!-- ============================================================
+        MAIN CONTENT
+        ============================================================ -->
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
+        <footer class="mt-12 pt-6 border-t border-gray-200 text-center text-sm text-gray-500">
+            <p>© 2026 Betting Tool. <span class="text-gray-400">Bet with your head, not your heart.</span></p>
+        </footer>
+        
     </div>
 
     <!-- ============================================================
-    ROCK SOLID SCROLL JAVASCRIPT
+    JAVASCRIPT
     ============================================================ -->
     <script>
         (function() {
-            // ============================================================
-            // ROCK SOLID SCROLL - NO RUBBER BAND EVER
-            // ============================================================
-            const scrollContainer = document.getElementById('scrollContainer');
-            
-            if (scrollContainer) {
-                let touchStartY = 0;
-                let touchStartScrollTop = 0;
-                
-                // Store scroll positions for boundary enforcement
-                let scrollTop = 0;
-                let scrollHeight = 0;
-                let clientHeight = 0;
-                
-                // Function to enforce scroll boundaries - NO RUBBER BAND
-                function enforceBoundaries() {
-                    if (!scrollContainer) return;
-                    
-                    scrollTop = scrollContainer.scrollTop;
-                    scrollHeight = scrollContainer.scrollHeight;
-                    clientHeight = scrollContainer.clientHeight;
-                    
-                    // Hard stop at top
-                    if (scrollTop < 0) {
-                        scrollContainer.scrollTop = 0;
-                        return;
+            function dismissToast(toast) {
+                if (!toast || !toast.parentNode) return;
+                toast.classList.add('hide');
+                setTimeout(function() {
+                    if (toast.parentNode) {
+                        toast.remove();
                     }
-                    
-                    // Hard stop at bottom
-                    if (scrollTop + clientHeight > scrollHeight) {
-                        scrollContainer.scrollTop = Math.max(0, scrollHeight - clientHeight);
-                        return;
-                    }
-                }
-                
-                // Prevent any rubber band effect on touch move
-                scrollContainer.addEventListener('touchstart', function(e) {
-                    touchStartY = e.touches[0].clientY;
-                    touchStartScrollTop = scrollContainer.scrollTop;
-                }, { passive: false });
-                
-                scrollContainer.addEventListener('touchmove', function(e) {
-                    const currentY = e.touches[0].clientY;
-                    const deltaY = currentY - touchStartY;
-                    const currentScrollTop = scrollContainer.scrollTop;
-                    const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
-                    
-                    // If at top and trying to pull down - PREVENT
-                    if (currentScrollTop <= 0 && deltaY > 0) {
-                        e.preventDefault();
-                        return false;
-                    }
-                    
-                    // If at bottom and trying to pull up - PREVENT
-                    if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
-                        e.preventDefault();
-                        return false;
-                    }
-                }, { passive: false });
-                
-                // Enforce boundaries on scroll
-                scrollContainer.addEventListener('scroll', function() {
-                    enforceBoundaries();
-                });
-                
-                // Enforce boundaries on resize
-                window.addEventListener('resize', function() {
-                    enforceBoundaries();
-                });
-                
-                // Initial enforcement
-                enforceBoundaries();
-                
-                // iOS specific fixes
-                if ('ontouchstart' in window) {
-                    scrollContainer.style.WebkitOverflowScrolling = 'touch';
-                }
+                }, 500);
             }
 
-            // Original right-click prevention
-            document.addEventListener('contextmenu', function(e) {
-                if (e.target.tagName === 'AUDIO' || e.target.tagName === 'VIDEO') {
-                    e.preventDefault();
-                    return false;
-                }
+            document.addEventListener('DOMContentLoaded', function() {
+                const toasts = document.querySelectorAll('.toast');
+                toasts.forEach(function(toast, index) {
+                    const delay = 4500 + (index * 200);
+                    setTimeout(function() {
+                        dismissToast(toast);
+                    }, delay);
+                });
+
+                document.querySelectorAll('.toast-close').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        const toast = this.closest('.toast');
+                        if (toast) {
+                            dismissToast(toast);
+                        }
+                    });
+                });
             });
-            
-            console.log('✅ Rock solid scroll activated!');
+
+            console.log('✅ Betting Tool loaded!');
         })();
     </script>
     {% block extra_js %}{% endblock %}

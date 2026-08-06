@@ -3,18 +3,18 @@ JAZZMIN_SETTINGS = {
     # 1. BRANDING & TITLES
     # =========================================================
     
-    "site_title": "EMIFORPHS Admin",
-    "site_header": "EMIFORPHS",
-    "site_brand": "EMIFORPHS",
-    "welcome_sign": "Welcome to EMIFORPHS",
-    "copyright": "EMIFORPHS Corporation",
+    "site_title": "SamTrillion Admin",
+    "site_header": "SamTrillion",
+    "site_brand": "SamTrillion",
+    "welcome_sign": "Welcome to SamTrillion",
+    "copyright": "SamTrillion Corporation",
     
     
     # =========================================================
     # 2. LOGO CONFIGURATION
     # =========================================================
     
-    "site_logo": "img/new_emilia_logo.png",
+    "site_logo": "img/Sam Circle picture.png",
     "site_logo_classes": "brand-image",
     # "login_logo": "img/new_emilia_logo.png",
     # "login_logo_classes": "login-logo-img",

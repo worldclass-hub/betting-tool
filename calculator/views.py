@@ -7,7 +7,6 @@ from .utils import calculate_value, calculate_implied_probability, calculate_exp
 
 def index(request):
     """Home page with dashboard"""
-    # Stats
     total_bets = BetLog.objects.count()
     total_wins = BetLog.objects.filter(result='W').count()
     total_losses = BetLog.objects.filter(result='L').count()
@@ -15,7 +14,6 @@ def index(request):
     
     win_rate = (total_wins / total_bets * 100) if total_bets > 0 else 0
     
-    # Recent bets
     recent_bets = BetLog.objects.order_by('-created_at')[:10]
     
     context = {
@@ -78,17 +76,17 @@ def bet_log(request):
                 reasoning=request.POST.get('reasoning', ''),
             )
             
-            # Auto-calculate implied probability and value
             if bet.odds and bet.your_probability:
                 bet.implied_probability = 1 / bet.odds
                 bet.value = (bet.your_probability / 100 * bet.odds) - 1
             
             bet.save()
-            messages.success(request, f'Bet logged successfully!')
+            messages.success(request, '✅ Bet logged successfully!')
             return redirect('/bet-log/')
             
         except (ValueError, TypeError):
-            messages.error(request, 'Error: Please check your input values')
+            messages.error(request, '❌ Error: Please check your input values')
+            return redirect('/bet-log/')
     
     bets = BetLog.objects.all().order_by('-created_at')
     
