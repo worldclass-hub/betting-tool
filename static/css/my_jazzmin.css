@@ -1,5 +1,5 @@
 /* ============================================================
-   JAZZMIN CUSTOM STYLES - COMPLETE FINAL VERSION
+   JAZZMIN CUSTOM STYLES - COMPLETE FINAL VERSION (FIXED)
    ============================================================ */
 
 /* ✅ Prevent body/html scroll on login */
@@ -116,7 +116,7 @@ body:not(.login-page) {
 }
 
 /* ============================================================
-   LOGIN FORM ELEMENTS
+   LOGIN FORM ELEMENTS - FIXED VISIBILITY
    ============================================================ */
 
 .login-box .card label {
@@ -124,30 +124,64 @@ body:not(.login-page) {
     font-weight: 500 !important;
 }
 
+/* --- FIX: Input fields with dark background and white text --- */
 .login-box .card input {
-    background-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(0, 0, 0, 0.4) !important;  /* Dark background */
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff !important;
+    color: #ffffff !important;  /* White text */
+    padding: 10px 12px !important;
+    font-size: 16px !important;
+    border-radius: 4px !important;
     transform: none !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Fix for autofill (browser auto-fill) */
+.login-box .card input:-webkit-autofill,
+.login-box .card input:-webkit-autofill:hover,
+.login-box .card input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.6) inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
 }
 
 .login-box .card input:focus {
-    background-color: rgba(255, 255, 255, 0.25) !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;  /* Even darker on focus */
     border-color: #0f766e !important;
     box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.3) !important;
     color: #ffffff !important;
     transform: none !important;
+    outline: none !important;
 }
 
+/* Placeholder text - visible */
 .login-box .card input::placeholder {
     color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 300 !important;
 }
+
+/* Specific input types */
+.login-box .card input[type="text"],
+.login-box .card input[type="password"],
+.login-box .card input[type="email"] {
+    color: #ffffff !important;
+    background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* When input has text (not placeholder) */
+.login-box .card input:not(:placeholder-shown) {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* --- End of input fixes --- */
 
 .login-box .card .btn-primary {
     background-color: #0f766e !important;
     border-color: #0f766e !important;
     transition: background-color 0.3s ease !important;
     transform: none !important;
+    padding: 10px 20px !important;
+    font-weight: 500 !important;
 }
 
 .login-box .card .btn-primary:hover {
