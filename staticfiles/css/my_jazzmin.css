@@ -7,6 +7,8 @@ html, body {
     margin: 0 !important;
     padding: 0 !important;
     height: 100% !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
 }
 
 body:not(.login-page) {
@@ -14,7 +16,7 @@ body:not(.login-page) {
 }
 
 /* ============================================================
-   LOGIN PAGE - FIXED BACKGROUND (NO MOVEMENT)
+   LOGIN PAGE - FIXED BACKGROUND
    ============================================================ */
 
 .login-page {
@@ -26,6 +28,8 @@ body:not(.login-page) {
     animation: none !important;
     transform: none !important;
     overflow: hidden !important;
+    min-height: 100vh !important;
+    height: 100% !important;
 }
 
 .login-page::before {
@@ -43,7 +47,7 @@ body:not(.login-page) {
 }
 
 /* ============================================================
-   LOGIN BOX - LOGO ON TOP WITH EXTRA SPACE
+   LOGIN BOX - BASE STYLES (JS adds padding)
    ============================================================ */
 
 .login-box {
@@ -57,13 +61,16 @@ body:not(.login-page) {
     justify-content: flex-start !important;
     align-items: center !important;
     min-height: 100vh !important;
-    padding-top: 150px !important;
-    padding-bottom: 40px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
     will-change: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 /* ============================================================
-   LOGIN LOGO - REMOVE DUPLICATE
+   LOGIN LOGO - LARGER SIZE
    ============================================================ */
 
 .login-logo {
@@ -73,170 +80,59 @@ body:not(.login-page) {
     flex-shrink: 0 !important;
 }
 
-/* ✅ Keep only the image, hide everything else in login-logo */
 .login-logo > *:not(img) {
     display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
 }
 
-/* ✅ Show only the logo image */
 .login-logo img {
     display: block !important;
-    max-width: 80px !important;
+    max-width: 120px !important;
+    width: 120px !important;
     height: auto !important;
-    margin: 0 auto 8px auto !important;
+    margin: 0 auto !important;
 }
 
 /* ============================================================
-   LOGIN CARD - GLASS EFFECT
+   LOGIN CARD
    ============================================================ */
 
-.card-body.auth-card,
 .login-box .card {
-    background-color: rgba(0, 0, 0, 0.6) !important;
-    border-radius: 12px !important;
-    color: #ffffff !important;
-    backdrop-filter: blur(8px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
-    transform: none !important;
-    animation: none !important;
-    transition: none !important;
-    will-change: auto !important;
-    margin-top: 20px !important;
-    max-width: 420px !important;
-    width: 100% !important;
-    flex-shrink: 0 !important;
-}
-
-/* ============================================================
-   LOGIN FORM ELEMENTS
-   ============================================================ */
-
-.login-box .card label {
-    color: #ffffff !important;
-    font-weight: 500 !important;
-}
-
-.login-box .card input {
-    background-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 16px !important;
+    color: #000000 !important;
+    backdrop-filter: blur(10px) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff !important;
-    transform: none !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    max-width: 400px !important;
+    width: 100% !important;
+    padding: 0 !important;
+    overflow: hidden !important;
 }
 
-.login-box .card input:focus {
-    background-color: rgba(255, 255, 255, 0.25) !important;
-    border-color: #0f766e !important;
-    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.3) !important;
-    color: #ffffff !important;
-    transform: none !important;
-}
-
-.login-box .card input::placeholder {
-    color: rgba(255, 255, 255, 0.6) !important;
-}
-
-.login-box .card .btn-primary {
-    background-color: #0f766e !important;
-    border-color: #0f766e !important;
-    transition: background-color 0.3s ease !important;
-    transform: none !important;
-}
-
-.login-box .card .btn-primary:hover {
-    background-color: #064e3b !important;
-    border-color: #064e3b !important;
-    transform: none !important;
-}
-
-.login-box .card a {
-    color: #5eead4 !important;
-}
-
-.login-box .card a:hover {
-    color: #99f6e4 !important;
-    text-decoration: underline !important;
+.login-box .card .card-body {
+    padding: 30px 28px 25px 28px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border: none !important;
 }
 
 /* ============================================================
    HIDE UNWANTED ELEMENTS
    ============================================================ */
 
-#background-video {
-    display: none !important;
-}
-
+#background-video,
 .badge,
 .user-avatar,
-#user-tools .user-avatar {
+#user-tools .user-avatar,
+.ui-builder-panel,
+.ui-builder-toggle,
+#ui-builder-panel,
+#ui-builder-toggle,
+[class*="ui-builder"],
+[class*="ui_builder"],
+.nav-link .fa-paint-brush,
+.nav-link .fa-sliders-h {
     display: none !important;
-}
-
-/* Hide "emilia" text on login */
-.login-box .form-text,
-.login-box .help-block,
-.login-box .helptext,
-.login-box .help-text,
-.login-box .text-muted,
-.login-box .form-control-feedback {
-    display: none !important;
-}
-
-/* ============================================================
-   LOGO SIZING
-   ============================================================ */
-
-.brand-image {
-    max-width: 70px !important;
-    height: auto !important;
-    width: auto !important;
-}
-
-.brand-text {
-    font-size: 14px !important;
-}
-
-.brand-link img {
-    max-width: 70px !important;
-    height: auto !important;
-}
-
-img[src*="new_emilia_logo.png"] {
-    max-width: 70px !important;
-    height: auto !important;
-}
-
-/* ============================================================
-   NAVBAR STYLING
-   ============================================================ */
-
-.navbar-nav .nav-link {
-    font-size: 16px !important;
-    color: #064e3b !important;
-    padding: 8px 10px !important;
-    transition: background-color 0.3s ease, border 0.3s ease !important;
-    border-bottom: 2px solid transparent !important;
-}
-
-.navbar-nav .nav-link:hover {
-    background-color: rgba(6, 78, 59, 0.2) !important;
-    border-radius: 5px !important;
-    border-bottom: 2px solid currentColor !important;
-}
-
-.navbar-nav .nav-link i {
-    transition: transform 0.3s ease !important;
-}
-
-.navbar-nav .nav-link:hover i {
-    transform: scale(1.2) !important;
 }
 
 /* ============================================================
@@ -250,16 +146,15 @@ img[src*="new_emilia_logo.png"] {
     background-color: #064e3b !important;
     color: #ffffff !important;
     border-radius: 50% !important;
-    width: 56px !important;
-    height: 56px !important;
+    width: 50px !important;
+    height: 50px !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
     text-decoration: none !important;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
     z-index: 9999 !important;
-    transition: transform 0.4s ease, background-color 0.3s ease, opacity 0.4s ease !important;
-    transform: none !important;
+    transition: all 0.3s ease !important;
 }
 
 .floating-home-btn:hover {
@@ -267,100 +162,38 @@ img[src*="new_emilia_logo.png"] {
     transform: scale(1.1) !important;
 }
 
-.floating-home-btn.hide {
-    transform: translateY(100px) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+.floating-home-btn i {
+    font-size: 20px !important;
 }
-
-/* ============================================================
-   HIDE UI CUSTOMIZER
-   ============================================================ */
-
-.ui-builder-panel,
-.ui-builder-toggle,
-#ui-builder-panel,
-#ui-builder-toggle,
-[class*="ui-builder"],
-[class*="ui_builder"],
-button[class*="ui-builder"],
-a[class*="ui-builder"],
-.nav-link .fa-paint-brush,
-.nav-link .fa-sliders-h {
-    display: none !important;
-}
-
-/* ============================================================
-   MOBILE RESPONSIVENESS - PUSHED DOWN MORE FOR MOBILE ONLY
-   ============================================================ */
 
 @media (max-width: 768px) {
-    .login-box {
-        padding-top: 250px !important;  /* Pushed way down for tablet */
-        padding-bottom: 20px !important;
-    }
-    
-    .login-box .card {
-        margin-top: 15px !important;
-        max-width: 90% !important;
-    }
-    
-    .login-logo img {
-        max-width: 60px !important;
-    }
-    
-    .brand-image {
-        max-width: 45px !important;
-    }
-    
     .floating-home-btn {
         width: 44px !important;
         height: 44px !important;
         bottom: 15px !important;
         right: 15px !important;
     }
-    
     .floating-home-btn i {
-        font-size: 16px !important;
+        font-size: 18px !important;
     }
 }
 
 @media (max-width: 480px) {
-    .login-box {
-        padding-top: 220px !important;  /* Pushed way down for mobile */
-        padding-bottom: 15px !important;
-    }
-    
-    .login-box .card {
-        margin-top: 10px !important;
-        max-width: 95% !important;
-    }
-    
-    .login-logo img {
-        max-width: 50px !important;
-    }
-    
-    .brand-image {
-        max-width: 35px !important;
-    }
-    
     .floating-home-btn {
         width: 38px !important;
         height: 38px !important;
         bottom: 10px !important;
         right: 10px !important;
     }
-    
     .floating-home-btn i {
-        font-size: 14px !important;
+        font-size: 16px !important;
     }
 }
 
 /* ============================================================
-   NUCLEAR FIX: REMOVE DUPLICATE LOGO TEXT
+   LOGO TEXT FIX
    ============================================================ */
 
-/* ✅ Hide ALL text in login-logo, keep only the image */
 .login-logo {
     font-size: 0 !important;
     line-height: 0 !important;
@@ -372,20 +205,75 @@ a[class*="ui-builder"],
     color: transparent !important;
 }
 
-/* ✅ But show the image */
 .login-logo img {
     font-size: initial !important;
     line-height: initial !important;
     color: initial !important;
     display: block !important;
-    max-width: 80px !important;
+    max-width: 120px !important;
+    width: 120px !important;
     height: auto !important;
-    margin: 0 auto 8px auto !important;
+    margin: 0 auto !important;
 }
 
-/* ✅ Hide any text nodes inside login-logo */
 .login-logo::before,
 .login-logo::after {
     display: none !important;
     content: none !important;
+}
+
+/* ============================================================
+   MOBILE RESPONSIVENESS
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .login-box {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    
+    .login-box .card {
+        max-width: 100% !important;
+    }
+    
+    .login-box .card .card-body {
+        padding: 25px 20px 20px 20px !important;
+    }
+    
+    .login-logo img {
+        max-width: 100px !important;
+        width: 100px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-box {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+    
+    .login-box .card .card-body {
+        padding: 20px 16px 16px 16px !important;
+    }
+    
+    .login-logo img {
+        max-width: 80px !important;
+        width: 80px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .login-box {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+    
+    .login-box .card .card-body {
+        padding: 16px 12px 12px 12px !important;
+    }
+    
+    .login-logo img {
+        max-width: 70px !important;
+        width: 70px !important;
+    }
 }
