@@ -127,88 +127,12 @@
         }
 
         /* ============================================================
-           FLOATING ADMIN BUTTON
+           FLOATING ADMIN BUTTON - REMOVED
            ============================================================ */
-        .float-admin {
-            position: fixed;
-            bottom: 80px;
-            right: 24px;
-            z-index: 999;
-            background: #2563eb;
-            color: white;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .float-admin:hover {
-            transform: scale(1.08);
-            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.45);
-            background: #1d4ed8;
-        }
-        .float-admin:active {
-            transform: scale(0.92);
-        }
-        .float-admin i {
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
-        }
-
-        .float-admin::after {
-            content: "Admin Panel";
-            position: absolute;
-            right: 66px;
-            background: #1e293b;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateX(8px);
-            transition: all 0.25s ease;
-            pointer-events: none;
-            letter-spacing: 0.3px;
-        }
-        .float-admin:hover::after {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        @media (max-width: 640px) {
-            .float-admin {
-                width: 50px;
-                height: 50px;
-                font-size: 1.1rem;
-                bottom: 70px;
-                right: 18px;
-            }
-            .float-admin::after {
-                display: none;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .float-admin {
-                bottom: 65px;
-                right: 16px;
-                width: 48px;
-                height: 48px;
-                font-size: 1rem;
-            }
-        }
 
         /* ============================================================
            ============================================================
-           WORLD-CLASS POWERFUL PLUS NAVIGATION - PERFECT POSITION
+           WORLD-CLASS POWERFUL PLUS NAVIGATION - PERFECT SPACING
            ============================================================
            ============================================================ */
         
@@ -229,21 +153,23 @@
             flex-shrink: 0;
         }
         
-        /* Right section - Current page + Plus button aligned perfectly */
+        /* Right section - Current page + Plus button with breathing room */
         .header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             flex-shrink: 0;
             position: relative;
+            /* ADDED BREATHING ROOM - Padding to prevent wall-hugging */
+            padding-right: 4px;
         }
         
-        /* Current page indicator - shows which page you're on */
+        /* Current page indicator - clean and readable */
         .nav-current {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 16px;
+            padding: 6px 18px;
             border-radius: 30px;
             background: rgba(37, 99, 235, 0.08);
             border: 1px solid rgba(37, 99, 235, 0.12);
@@ -258,7 +184,7 @@
             font-weight: 600;
         }
         
-        /* The powerful PLUS button - PERFECTLY POSITIONED */
+        /* The powerful PLUS button - perfectly sized */
         .nav-plus-btn {
             width: 44px;
             height: 44px;
@@ -323,27 +249,27 @@
         }
 
         /* ============================================================
-           DROPDOWN MENU - PERFECTLY POSITIONED, NEVER HIDDEN
+           DROPDOWN MENU - PERFECT SPACING, NEVER HUGGING THE WALL
            ============================================================ */
         .nav-dropdown {
             position: absolute;
-            top: calc(100% + 14px);
-            right: 0;
+            top: calc(100% + 16px);
+            /* MOVED LEFT - More breathing room from the right wall */
+            right: -20px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 16px;
-            min-width: 220px;
-            padding: 8px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-radius: 18px;
+            min-width: 240px;
+            padding: 10px 12px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.3);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-8px) scale(0.96);
+            transform: translateY(-10px) scale(0.96);
             transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
             z-index: 1000;
             transform-origin: top right;
-            /* ENSURE DROPDOWN NEVER HIDDEN */
             overflow: visible;
             max-height: none;
         }
@@ -354,27 +280,32 @@
             transform: translateY(0) scale(1);
         }
         
-        /* Dropdown items */
+        /* Dropdown items - spacious and elegant */
         .nav-dropdown-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
-            border-radius: 10px;
+            gap: 14px;
+            padding: 12px 18px;
+            border-radius: 12px;
             color: #475569;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 500;
             transition: all 0.25s ease;
             cursor: pointer;
             position: relative;
             white-space: nowrap;
+            margin-bottom: 2px;
+        }
+        
+        .nav-dropdown-item:last-child {
+            margin-bottom: 0;
         }
         
         .nav-dropdown-item:hover {
             background: rgba(37, 99, 235, 0.06);
             color: #1a202c;
-            transform: translateX(4px);
+            transform: translateX(6px);
         }
         
         .nav-dropdown-item.active {
@@ -389,31 +320,94 @@
             left: 0;
             top: 20%;
             bottom: 20%;
-            width: 3px;
+            width: 3.5px;
             background: #2563eb;
-            border-radius: 0 3px 3px 0;
+            border-radius: 0 4px 4px 0;
         }
         
         /* Dropdown divider */
         .nav-dropdown-divider {
             height: 1px;
             background: #e2e8f0;
-            margin: 4px 8px;
+            margin: 6px 12px;
         }
         
         /* Dropdown header */
         .nav-dropdown-header {
-            padding: 8px 16px 4px;
+            padding: 6px 18px 10px;
             font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #94a3b8;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         /* ============================================================
-           RESPONSIVE ADJUSTMENTS
+           DROPDOWN CLOSE BUTTON (X) - NEW
            ============================================================ */
+        .dropdown-close-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            color: #64748b;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            z-index: 10;
+        }
+        .dropdown-close-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            transform: scale(1.1);
+        }
+        .dropdown-close-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* ============================================================
+           RESPONSIVE ADJUSTMENTS - PERFECT ON ALL SCREENS
+           ============================================================ */
+        @media (max-width: 768px) {
+            .header-right {
+                gap: 10px;
+                padding-right: 2px;
+            }
+            .nav-current {
+                padding: 5px 14px;
+                font-size: 0.75rem;
+            }
+            .nav-plus-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .nav-dropdown {
+                right: -16px;
+                min-width: 210px;
+                padding: 8px 10px;
+                border-radius: 16px;
+            }
+            .nav-dropdown-item {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+            .dropdown-close-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 0.8rem;
+                top: 6px;
+                right: 6px;
+            }
+        }
+
         @media (max-width: 640px) {
             .header-logo .brand-text {
                 font-size: 1.1rem;
@@ -422,23 +416,40 @@
                 width: 34px;
                 height: 34px;
             }
+            .header-right {
+                gap: 8px;
+            }
             .nav-current {
                 padding: 4px 12px;
                 font-size: 0.7rem;
             }
             .nav-plus-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
+                width: 38px;
+                height: 38px;
+                font-size: 0.95rem;
             }
             .nav-dropdown {
-                min-width: 180px;
-                right: -8px;
-                top: calc(100% + 10px);
+                right: -14px;
+                top: calc(100% + 14px);
+                min-width: 190px;
+                padding: 6px 8px;
+                border-radius: 14px;
             }
             .nav-dropdown-item {
+                padding: 9px 14px;
                 font-size: 0.8rem;
-                padding: 8px 14px;
+                gap: 10px;
+            }
+            .nav-dropdown-header {
+                padding: 4px 14px 8px;
+                font-size: 0.6rem;
+            }
+            .dropdown-close-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 0.7rem;
+                top: 4px;
+                right: 4px;
             }
         }
 
@@ -451,24 +462,51 @@
                 height: 30px;
                 border-width: 2px;
             }
+            .header-right {
+                gap: 6px;
+                padding-right: 0px;
+            }
             .nav-current {
                 padding: 3px 10px;
                 font-size: 0.65rem;
             }
             .nav-plus-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 0.9rem;
+                width: 34px;
+                height: 34px;
+                font-size: 0.85rem;
             }
             .nav-dropdown {
-                min-width: 160px;
-                right: -12px;
-                top: calc(100% + 8px);
-                padding: 6px;
+                right: -10px;
+                top: calc(100% + 12px);
+                min-width: 170px;
+                padding: 6px 8px;
+                border-radius: 12px;
             }
             .nav-dropdown-item {
+                padding: 8px 12px;
                 font-size: 0.75rem;
-                padding: 7px 12px;
+                gap: 8px;
+            }
+            .nav-dropdown-header {
+                padding: 4px 12px 6px;
+                font-size: 0.55rem;
+            }
+            .nav-dropdown-divider {
+                margin: 4px 8px;
+            }
+            .nav-badge {
+                width: 16px;
+                height: 16px;
+                font-size: 0.5rem;
+                top: -3px;
+                right: -3px;
+            }
+            .dropdown-close-btn {
+                width: 24px;
+                height: 24px;
+                font-size: 0.65rem;
+                top: 4px;
+                right: 4px;
             }
         }
 
@@ -804,10 +842,39 @@
             min-height: 44px;
             min-width: 44px;
         }
+
+        /* ============================================================
+           OVERLAY (dark stuff around page body) - NEW
+           ============================================================ */
+        .overlay-dark {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 500;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            pointer-events: none;
+        }
+        .overlay-dark.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        /* when overlay is active, prevent body scroll (already handled by scroll-container) */
+        body.overlay-active .scroll-container {
+            overflow: hidden !important;
+            touch-action: none !important;
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+
+    <!-- OVERLAY (dark stuff) -->
+    <div class="overlay-dark" id="overlayDark"></div>
 
     <div class="scroll-container" id="scrollContainer">
         <div class="main-wrapper">
@@ -815,7 +882,7 @@
             <div class="page-wrapper">
                 
                 <!-- ============================================================
-                HEADER - PERFECTLY ALIGNED: Logo left | Current Page + Plus right
+                HEADER - PERFECT SPACING, NO WALL-HUGGING
                 ============================================================ -->
                 <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
                     
@@ -832,7 +899,7 @@
                     </a>
                     
                     <!-- ============================================================
-                    RIGHT SIDE: Current Page + Powerful Plus Button (PERFECTLY POSITIONED)
+                    RIGHT SIDE: Current Page + Powerful Plus Button (PERFECT SPACING)
                     ============================================================ -->
                     <div class="header-right">
                         
@@ -853,9 +920,14 @@
                         </button>
                         
                         <!-- ============================================================
-                        DROPDOWN MENU - PERFECTLY POSITIONED, NEVER HIDDEN
+                        DROPDOWN MENU - PERFECT SPACING, WIDE, POWERFUL
                         ============================================================ -->
                         <div class="nav-dropdown" id="navDropdown">
+                            <!-- CLOSE BUTTON (X) - NEW -->
+                            <button class="dropdown-close-btn" id="dropdownCloseBtn" aria-label="Close menu">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            
                             <div class="nav-dropdown-header">Navigate</div>
                             
                             <a href="/" class="nav-dropdown-item {% if request.path == '/' %}active{% endif %}" data-page="Dashboard">
@@ -899,10 +971,7 @@
                     {% endif %}
                 </div>
 
-                <!-- FLOATING ADMIN BUTTON -->
-                <a href="/admin/" class="float-admin" title="Go to Admin Panel">
-                    <i class="fas fa-user-shield"></i>
-                </a>
+                <!-- FLOATING ADMIN BUTTON - REMOVED (as requested) -->
 
                 <!-- MAIN CONTENT -->
                 <main>
@@ -996,44 +1065,75 @@
             }
 
             // ============================================================
-            // POWERFUL PLUS NAVIGATION - PERFECTLY POSITIONED
+            // POWERFUL PLUS NAVIGATION + OVERLAY (dark stuff) + CLOSE BTN
             // ============================================================
             const navPlusBtn = document.getElementById('navPlusBtn');
             const navDropdown = document.getElementById('navDropdown');
             const navBadge = document.getElementById('navBadge');
             const currentPageDisplay = document.getElementById('currentPageDisplay');
-            
+            const overlay = document.getElementById('overlayDark');
+            const body = document.body;
+            const dropdownCloseBtn = document.getElementById('dropdownCloseBtn');
+
             // Get current page name from active nav item
             function getCurrentPageName() {
                 const activeItem = document.querySelector('.nav-dropdown-item.active');
                 return activeItem ? activeItem.getAttribute('data-page') : 'Dashboard';
             }
-            
-            // Toggle dropdown
+
+            // --- Overlay + scroll lock ---
+            function showOverlay() {
+                if (!overlay) return;
+                overlay.classList.add('active');
+                body.classList.add('overlay-active');
+                if (scrollContainer) {
+                    scrollContainer.style.overflow = 'hidden';
+                    scrollContainer.style.touchAction = 'none';
+                }
+            }
+
+            function hideOverlay() {
+                if (!overlay) return;
+                overlay.classList.remove('active');
+                body.classList.remove('overlay-active');
+                if (scrollContainer) {
+                    scrollContainer.style.overflow = '';
+                    scrollContainer.style.touchAction = '';
+                }
+            }
+
+            // Toggle dropdown + overlay
             function toggleDropdown() {
-                navDropdown.classList.toggle('open');
-                navPlusBtn.classList.toggle('open');
+                const isOpen = navDropdown.classList.contains('open');
                 
-                // Update badge
-                if (navDropdown.classList.contains('open')) {
-                    navBadge.textContent = '✕';
-                    navBadge.style.background = '#ef4444';
-                } else {
+                if (isOpen) {
+                    // close
+                    navDropdown.classList.remove('open');
+                    navPlusBtn.classList.remove('open');
+                    hideOverlay();
                     const totalItems = document.querySelectorAll('.nav-dropdown-item:not([href*="admin"])').length;
                     navBadge.textContent = totalItems;
                     navBadge.style.background = '#ef4444';
+                } else {
+                    // open
+                    navDropdown.classList.add('open');
+                    navPlusBtn.classList.add('open');
+                    showOverlay();
+                    navBadge.textContent = '✕';
+                    navBadge.style.background = '#ef4444';
                 }
             }
-            
-            // Close dropdown
+
+            // Close dropdown + overlay
             function closeDropdown() {
                 navDropdown.classList.remove('open');
                 navPlusBtn.classList.remove('open');
+                hideOverlay();
                 const totalItems = document.querySelectorAll('.nav-dropdown-item:not([href*="admin"])').length;
                 navBadge.textContent = totalItems;
                 navBadge.style.background = '#ef4444';
             }
-            
+
             // Plus button click
             if (navPlusBtn) {
                 navPlusBtn.addEventListener('click', function(e) {
@@ -1041,15 +1141,36 @@
                     toggleDropdown();
                 });
             }
-            
-            // Click outside to close
+
+            // Close button click (NEW)
+            if (dropdownCloseBtn) {
+                dropdownCloseBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (navDropdown.classList.contains('open')) {
+                        closeDropdown();
+                    }
+                });
+            }
+
+            // Click outside to close (including overlay click)
             document.addEventListener('click', function(e) {
                 const headerRight = document.querySelector('.header-right');
                 if (headerRight && !headerRight.contains(e.target)) {
-                    closeDropdown();
+                    if (navDropdown.classList.contains('open')) {
+                        closeDropdown();
+                    }
                 }
             });
-            
+
+            // Overlay click -> close
+            if (overlay) {
+                overlay.addEventListener('click', function() {
+                    if (navDropdown.classList.contains('open')) {
+                        closeDropdown();
+                    }
+                });
+            }
+
             // Update current page indicator when clicking a nav item
             document.querySelectorAll('.nav-dropdown-item').forEach(function(item) {
                 item.addEventListener('click', function() {
@@ -1057,18 +1178,21 @@
                     if (pageName) {
                         currentPageDisplay.textContent = pageName;
                     }
+                    // close after navigation
                     closeDropdown();
                 });
             });
-            
+
             // Close dropdown on Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
-                    closeDropdown();
+                    if (navDropdown.classList.contains('open')) {
+                        closeDropdown();
+                    }
                 }
             });
 
-            // Toast functions
+            // --- Toast functions ---
             function dismissToast(toast) {
                 if (!toast || !toast.parentNode) return;
                 toast.classList.add('hide');
@@ -1099,10 +1223,13 @@
                 });
 
                 // Set initial current page display
-                currentPageDisplay.textContent = getCurrentPageName();
+                if (currentPageDisplay) {
+                    currentPageDisplay.textContent = getCurrentPageName();
+                }
                 
-                console.log('✅ Betting Tool loaded - Powerful Plus Navigation perfectly positioned!');
+                console.log('✅ Betting Tool loaded - Powerful Plus Navigation + overlay + close button!');
             });
+
         })();
     </script>
     {% block extra_js %}{% endblock %}
