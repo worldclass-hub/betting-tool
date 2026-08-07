@@ -127,16 +127,8 @@
         }
 
         /* ============================================================
-           FLOATING ADMIN BUTTON - REMOVED
+           HEADER - Full width with proper alignment
            ============================================================ */
-
-        /* ============================================================
-           ============================================================
-           WORLD-CLASS POWERFUL PLUS NAVIGATION - PERFECT SPACING
-           ============================================================
-           ============================================================ */
-        
-        /* Header - Full width with proper alignment */
         .header-main {
             display: flex;
             align-items: center;
@@ -160,7 +152,6 @@
             gap: 14px;
             flex-shrink: 0;
             position: relative;
-            /* ADDED BREATHING ROOM - Padding to prevent wall-hugging */
             padding-right: 4px;
         }
         
@@ -201,6 +192,7 @@
             box-shadow: 0 2px 12px rgba(37, 99, 235, 0.25);
             position: relative;
             flex-shrink: 0;
+            z-index: 1001;
         }
         
         .nav-plus-btn:hover {
@@ -212,16 +204,21 @@
             transform: scale(0.92);
         }
         
-        /* Rotate plus button when open - becomes X */
-        .nav-plus-btn.open {
-            transform: rotate(45deg);
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-            box-shadow: 0 2px 12px rgba(220, 38, 38, 0.25);
-        }
-        
-        .nav-plus-btn.open:hover {
-            transform: rotate(45deg) scale(1.06);
-            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+        /* HIDE the plus button when dropdown is open */
+        .nav-plus-btn.hidden-btn {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.5) rotate(45deg);
+            pointer-events: none;
+            width: 0;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            min-width: 0;
+            min-height: 0;
+            border: none;
+            box-shadow: none;
         }
         
         /* Badge count on plus button */
@@ -254,7 +251,6 @@
         .nav-dropdown {
             position: absolute;
             top: calc(100% + 16px);
-            /* MOVED LEFT - More breathing room from the right wall */
             right: -20px;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
@@ -343,37 +339,41 @@
         }
 
         /* ============================================================
-           DROPDOWN CLOSE BUTTON (X) - NEW
+           DROPDOWN CLOSE BUTTON (X) - RAISED UP, NO TOUCHING ANYTHING
            ============================================================ */
         .dropdown-close-btn {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 32px;
-            height: 32px;
+            top: -14px;
+            right: -10px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: rgba(0, 0, 0, 0.05);
-            border: none;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.25s ease;
-            z-index: 10;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 1002;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            pointer-events: auto;
         }
         .dropdown-close-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            transform: scale(1.1);
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 24px rgba(239, 68, 68, 0.3);
         }
         .dropdown-close-btn:active {
-            transform: scale(0.9);
+            transform: scale(0.9) rotate(90deg);
         }
 
         /* ============================================================
-           RESPONSIVE ADJUSTMENTS - PERFECT ON ALL SCREENS
+           RESPONSIVE ADJUSTMENTS
            ============================================================ */
         @media (max-width: 768px) {
             .header-right {
@@ -400,11 +400,11 @@
                 font-size: 0.85rem;
             }
             .dropdown-close-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 0.8rem;
-                top: 6px;
-                right: 6px;
+                width: 32px;
+                height: 32px;
+                font-size: 0.85rem;
+                top: -12px;
+                right: -8px;
             }
         }
 
@@ -445,11 +445,12 @@
                 font-size: 0.6rem;
             }
             .dropdown-close-btn {
-                width: 26px;
-                height: 26px;
-                font-size: 0.7rem;
-                top: 4px;
-                right: 4px;
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+                top: -10px;
+                right: -6px;
+                border-width: 2px;
             }
         }
 
@@ -502,11 +503,13 @@
                 right: -3px;
             }
             .dropdown-close-btn {
-                width: 24px;
-                height: 24px;
-                font-size: 0.65rem;
-                top: 4px;
-                right: 4px;
+                width: 28px;
+                height: 28px;
+                font-size: 0.7rem;
+                top: -8px;
+                right: -5px;
+                border-width: 2px;
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
             }
         }
 
@@ -844,7 +847,7 @@
         }
 
         /* ============================================================
-           OVERLAY (dark stuff around page body) - NEW
+           OVERLAY (dark stuff around page body)
            ============================================================ */
         .overlay-dark {
             position: fixed;
@@ -863,10 +866,15 @@
             visibility: visible;
             pointer-events: auto;
         }
-        /* when overlay is active, prevent body scroll (already handled by scroll-container) */
+        /* when overlay is active, prevent body scroll */
         body.overlay-active .scroll-container {
             overflow: hidden !important;
             touch-action: none !important;
+        }
+        /* overlay clicks do NOT close dropdown - they are blocked by JS */
+        .overlay-dark {
+            pointer-events: auto !important;
+            cursor: default;
         }
     </style>
     {% block extra_css %}{% endblock %}
@@ -899,7 +907,7 @@
                     </a>
                     
                     <!-- ============================================================
-                    RIGHT SIDE: Current Page + Powerful Plus Button (PERFECT SPACING)
+                    RIGHT SIDE: Current Page + Plus Button (hides when open)
                     ============================================================ -->
                     <div class="header-right">
                         
@@ -913,17 +921,17 @@
                             </span>
                         </div>
                         
-                        <!-- Powerful Plus Button -->
+                        <!-- Powerful Plus Button - HIDES when dropdown is open -->
                         <button class="nav-plus-btn" id="navPlusBtn" aria-label="Toggle navigation menu">
                             <i class="fas fa-plus"></i>
                             <span class="nav-badge" id="navBadge">4</span>
                         </button>
                         
                         <!-- ============================================================
-                        DROPDOWN MENU - PERFECT SPACING, WIDE, POWERFUL
+                        DROPDOWN MENU - with CLOSE BUTTON (raised up)
                         ============================================================ -->
                         <div class="nav-dropdown" id="navDropdown">
-                            <!-- CLOSE BUTTON (X) - NEW -->
+                            <!-- CLOSE BUTTON (X) - RAISED UP, NO TOUCHING -->
                             <button class="dropdown-close-btn" id="dropdownCloseBtn" aria-label="Close menu">
                                 <i class="fas fa-times"></i>
                             </button>
@@ -970,8 +978,6 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-
-                <!-- FLOATING ADMIN BUTTON - REMOVED (as requested) -->
 
                 <!-- MAIN CONTENT -->
                 <main>
@@ -1065,7 +1071,7 @@
             }
 
             // ============================================================
-            // POWERFUL PLUS NAVIGATION + OVERLAY (dark stuff) + CLOSE BTN
+            // POWERFUL PLUS NAVIGATION - BUTTON HIDES WHEN OPEN
             // ============================================================
             const navPlusBtn = document.getElementById('navPlusBtn');
             const navDropdown = document.getElementById('navDropdown');
@@ -1109,7 +1115,7 @@
                 if (isOpen) {
                     // close
                     navDropdown.classList.remove('open');
-                    navPlusBtn.classList.remove('open');
+                    navPlusBtn.classList.remove('hidden-btn');  // SHOW the button
                     hideOverlay();
                     const totalItems = document.querySelectorAll('.nav-dropdown-item:not([href*="admin"])').length;
                     navBadge.textContent = totalItems;
@@ -1117,24 +1123,25 @@
                 } else {
                     // open
                     navDropdown.classList.add('open');
-                    navPlusBtn.classList.add('open');
+                    navPlusBtn.classList.add('hidden-btn');    // HIDE the button
                     showOverlay();
                     navBadge.textContent = '✕';
                     navBadge.style.background = '#ef4444';
                 }
             }
 
-            // Close dropdown + overlay
+            // Close dropdown + overlay - ONLY via close button
             function closeDropdown() {
+                if (!navDropdown.classList.contains('open')) return;
                 navDropdown.classList.remove('open');
-                navPlusBtn.classList.remove('open');
+                navPlusBtn.classList.remove('hidden-btn');    // SHOW the button
                 hideOverlay();
                 const totalItems = document.querySelectorAll('.nav-dropdown-item:not([href*="admin"])').length;
                 navBadge.textContent = totalItems;
                 navBadge.style.background = '#ef4444';
             }
 
-            // Plus button click
+            // Plus button click - toggles (only visible when dropdown is closed)
             if (navPlusBtn) {
                 navPlusBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -1142,34 +1149,16 @@
                 });
             }
 
-            // Close button click (NEW)
+            // Close button click - ONLY this can close
             if (dropdownCloseBtn) {
                 dropdownCloseBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    if (navDropdown.classList.contains('open')) {
-                        closeDropdown();
-                    }
+                    closeDropdown();
                 });
             }
 
-            // Click outside to close (including overlay click)
-            document.addEventListener('click', function(e) {
-                const headerRight = document.querySelector('.header-right');
-                if (headerRight && !headerRight.contains(e.target)) {
-                    if (navDropdown.classList.contains('open')) {
-                        closeDropdown();
-                    }
-                }
-            });
-
-            // Overlay click -> close
-            if (overlay) {
-                overlay.addEventListener('click', function() {
-                    if (navDropdown.classList.contains('open')) {
-                        closeDropdown();
-                    }
-                });
-            }
+            // ---- NO OUTSIDE CLICK - removed document click handler ----
+            // ---- NO OVERLAY CLICK - overlay click does nothing ----
 
             // Update current page indicator when clicking a nav item
             document.querySelectorAll('.nav-dropdown-item').forEach(function(item) {
@@ -1227,7 +1216,7 @@
                     currentPageDisplay.textContent = getCurrentPageName();
                 }
                 
-                console.log('✅ Betting Tool loaded - Powerful Plus Navigation + overlay + close button!');
+                console.log('✅ Betting Tool loaded - Button hides when dropdown opens!');
             });
 
         })();
