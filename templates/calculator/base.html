@@ -39,6 +39,8 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            /* SOFT BOTTOM BOUNDARY - Prevents rubber band without fighting iOS */
+            overscroll-behavior: contain;
         }
 
         /* ============================================================
@@ -120,28 +122,22 @@
         }
 
         /* ============================================================
-           STIFF BOTTOM BOUNDARY - Prevents rubber band at bottom ONLY
+           INVISIBLE BOTTOM BOUNDARY - No color, just prevents rubber band
            ============================================================ */
         .footer-boundary {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #2563eb, #1d4ed8, #2563eb);
+            height: 2px;
+            background: transparent;
             z-index: 9999;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.3s ease;
-            border-radius: 2px;
-        }
-        
-        .footer-boundary.visible {
-            opacity: 1;
         }
 
         /* ============================================================
-           FLOATING ADMIN BUTTON - Moved UP slightly (bottom: 80px)
+           FLOATING ADMIN BUTTON - Moved UP
            ============================================================ */
         .float-admin {
             position: fixed;
@@ -626,7 +622,7 @@
 </head>
 <body>
 
-    <!-- Stiff Bottom Boundary - ONLY AT BOTTOM -->
+    <!-- INVISIBLE BOTTOM BOUNDARY - No color, just prevents rubber band -->
     <div id="footerBoundary" class="footer-boundary"></div>
 
     <!-- MAIN WRAPPER - Pushes footer to bottom -->
@@ -682,7 +678,7 @@
         </div>
 
         <!-- ============================================================
-        FLOATING ADMIN BUTTON - Moved UP (bottom: 80px)
+        FLOATING ADMIN BUTTON - Moved UP
         ============================================================ -->
         <a href="/admin/" class="float-admin" title="Go to Admin Panel">
             <i class="fas fa-user-shield"></i>
@@ -705,16 +701,18 @@
     </footer>
 
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT - INVISIBLE BOTTOM BOUNDARY (No color)
     ============================================================ -->
     <script>
         (function() {
             // ============================================================
-            // STIFF BOTTOM BOUNDARY - Prevents rubber band at bottom ONLY
+            // INVISIBLE BOTTOM BOUNDARY - Prevents rubber band with NO color
             // ============================================================
             const footerBoundary = document.getElementById('footerBoundary');
             
             if (footerBoundary) {
+                let lastScrollTop = 0;
+                
                 window.addEventListener('scroll', function() {
                     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                     const scrollHeight = document.documentElement.scrollHeight;
@@ -722,40 +720,17 @@
                     
                     const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
                     
+                    // When near the bottom, make the boundary "active" but invisible
                     if (distanceFromBottom <= 50 && distanceFromBottom > 0) {
-                        footerBoundary.classList.add('visible');
+                        // Boundary is active but transparent - prevents rubber band
+                        footerBoundary.style.opacity = '0';
                     } else {
-                        footerBoundary.classList.remove('visible');
+                        footerBoundary.style.opacity = '0';
                     }
                     
-                    // HARD STOP AT BOTTOM - Prevents rubber band
-                    if (scrollTop + clientHeight >= scrollHeight - 1) {
-                        window.scrollTo(0, scrollHeight - clientHeight);
-                    }
-                }, { passive: false });
+                    lastScrollTop = scrollTop;
+                }, { passive: true });
             }
-
-            // Prevent touch pull at bottom ONLY
-            let touchStartY = 0;
-            let touchStartScrollTop = 0;
-            
-            document.addEventListener('touchstart', function(e) {
-                touchStartY = e.touches[0].clientY;
-                touchStartScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            }, { passive: false });
-            
-            document.addEventListener('touchmove', function(e) {
-                const currentY = e.touches[0].clientY;
-                const deltaY = currentY - touchStartY;
-                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const maxScrollTop = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                
-                // If at bottom and trying to pull up - PREVENT (rubber band at bottom)
-                if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
-                    e.preventDefault();
-                    return false;
-                }
-            }, { passive: false });
 
             function dismissToast(toast) {
                 if (!toast || !toast.parentNode) return;
@@ -817,7 +792,7 @@
                     window.addEventListener('resize', updateFadeHint);
                 }
 
-                console.log('✅ Betting Tool loaded - Footer at bottom, Admin button moved up!');
+                console.log('✅ Betting Tool loaded - Invisible bottom boundary, no color!');
             });
         })();
     </script>
