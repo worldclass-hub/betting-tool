@@ -17,134 +17,72 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         /* ============================================================
-           BODY SCROLLS NORMALLY - BOTTOM BOUNDARY ONLY CONTROLLED
+           WORLD-CLASS SCROLL SYSTEM - ZERO SHAKE ON IPHONE
            ============================================================ */
         html, body {
+            width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+            background: #f0f4f8;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overscroll-behavior: none;
+            touch-action: pan-y pinch-zoom;
         }
         
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f0f4f8;
-            color: #1a202c;
-            overflow-x: hidden;
+        /* SINGLE SCROLL CONTAINER */
+        .scroll-container {
+            width: 100%;
+            height: 100%;
             overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            background: #f0f4f8;
             -webkit-overflow-scrolling: touch;
-            /* HIDE SCROLLBAR */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            /* FLEX LAYOUT */
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            /* SOFT BOTTOM BOUNDARY - Prevents rubber band at bottom only */
-            overscroll-behavior: contain;
+            overscroll-behavior: none;
+            touch-action: pan-y;
+            scroll-behavior: smooth;
+        }
+        
+        /* COMPLETELY HIDDEN SCROLLBAR */
+        .scroll-container::-webkit-scrollbar {
+            width: 0px !important;
+            height: 0px !important;
+            background: transparent !important;
+            display: none !important;
+        }
+        .scroll-container {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
         }
 
-        /* ============================================================
-           COMPLETELY HIDDEN SCROLLBAR - Nothing shows at all
-           ============================================================ */
         * {
             scrollbar-width: none !important;
             -ms-overflow-style: none !important;
         }
-        
         *::-webkit-scrollbar {
             width: 0px !important;
             height: 0px !important;
             background: transparent !important;
             display: none !important;
         }
-        
-        *::-webkit-scrollbar-track {
-            background: transparent !important;
-            display: none !important;
-        }
-        
-        *::-webkit-scrollbar-thumb {
-            background: transparent !important;
-            display: none !important;
-        }
-        
-        *::-webkit-scrollbar-thumb:hover {
-            background: transparent !important;
-            display: none !important;
-        }
 
         /* ============================================================
-           NAVIGATION - FREE SWIPING ON MOBILE
+           MAIN WRAPPER
            ============================================================ */
-        .nav-wrapper {
-            position: relative;
-            flex: 1;
-            max-width: 100%;
-            overflow: hidden;
-        }
-
-        .nav-links {
+        .main-wrapper {
+            width: 100%;
+            min-height: 100%;
+            background: #f0f4f8;
             display: flex;
-            flex-wrap: nowrap;
-            gap: 4px;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 2px 0;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            /* ALLOW FREE SWIPING */
-            touch-action: pan-x;
-            overscroll-behavior-x: contain;
-        }
-        .nav-links::-webkit-scrollbar {
-            display: none;
-            width: 0px;
-            height: 0px;
-        }
-        
-        .nav-link {
-            color: #64748b;
-            transition: all 0.2s ease;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .nav-link:hover {
-            color: #1a202c;
-            background: #f1f5f9;
-        }
-        .nav-link.active {
-            color: #2563eb;
-            background: #eff6ff;
+            flex-direction: column;
         }
 
-        /* Fade hint - shows when more content exists */
-        .nav-fade-hint {
-            position: absolute;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-            pointer-events: none;
-            background: linear-gradient(to left, #f0f4f8 15%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            border-radius: 8px;
-            z-index: 5;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-fade-hint {
-                opacity: 0.85;
-            }
-        }
-
-        /* ============================================================
-           MAIN CONTENT WRAPPER - Pushes footer to bottom
-           ============================================================ */
         .page-wrapper {
             flex: 1 0 auto;
             width: 100%;
@@ -160,7 +98,7 @@
         }
 
         /* ============================================================
-           FOOTER - Stays at bottom
+           FOOTER
            ============================================================ */
         .footer-bottom {
             flex-shrink: 0;
@@ -188,21 +126,6 @@
             .footer-bottom p {
                 font-size: 0.75rem;
             }
-        }
-
-        /* ============================================================
-           INVISIBLE BOTTOM BOUNDARY - No color, just prevents rubber band
-           ============================================================ */
-        .footer-boundary {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: transparent;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0;
         }
 
         /* ============================================================
@@ -300,7 +223,7 @@
         }
 
         /* ============================================================
-           BUTTONS - Light & Clean
+           BUTTONS
            ============================================================ */
         .btn-primary {
             background: #2563eb;
@@ -554,7 +477,7 @@
         }
 
         /* ============================================================
-           INPUTS - Light
+           INPUTS
            ============================================================ */
         input, select, textarea {
             width: 100%;
@@ -610,6 +533,182 @@
             }
         }
 
+        /* ============================================================
+           ============================================================
+           MARVELOUS WORLD-CLASS NAVIGATION
+           ============================================================
+           ============================================================ */
+        
+        /* Navigation Container - Elegant & Powerful */
+        .nav-container {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 4px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            border-color: rgba(37, 99, 235, 0.15);
+        }
+        
+        /* Navigation Links - Smooth & Professional */
+        .nav-links {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 2px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 2px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            touch-action: pan-x;
+            overscroll-behavior-x: contain;
+        }
+        
+        .nav-links::-webkit-scrollbar {
+            display: none;
+            width: 0px;
+            height: 0px;
+        }
+        
+        /* Individual Nav Items - Premium Feel */
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #64748b;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            flex-shrink: 0;
+            position: relative;
+            background: transparent;
+            text-decoration: none;
+            min-height: 44px;
+        }
+        
+        /* Nav Icon */
+        .nav-link i {
+            font-size: 1rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            width: 18px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        /* Nav Link Hover */
+        .nav-link:hover {
+            color: #1a202c;
+            background: #f1f5f9;
+            transform: translateY(-1px);
+        }
+        
+        .nav-link:hover i {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        
+        /* Nav Link Active - World-Class Highlight */
+        .nav-link.active {
+            color: #2563eb;
+            background: #eff6ff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+        }
+        
+        .nav-link.active i {
+            opacity: 1;
+            color: #2563eb;
+        }
+        
+        /* Nav Link Active Indicator - Subtle Line */
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2.5px;
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            border-radius: 4px;
+        }
+        
+        /* Mobile Optimized */
+        @media (max-width: 640px) {
+            .nav-container {
+                border-radius: 14px;
+                padding: 3px;
+                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            }
+            
+            .nav-link {
+                padding: 8px 14px;
+                font-size: 0.78rem;
+                gap: 6px;
+                min-height: 38px;
+                border-radius: 10px;
+            }
+            
+            .nav-link i {
+                font-size: 0.85rem;
+                width: 16px;
+            }
+            
+            .nav-link.active::after {
+                width: 14px;
+                height: 2px;
+                bottom: 3px;
+            }
+            
+            .nav-links {
+                gap: 1px;
+            }
+        }
+        
+        /* Extra Small Screens */
+        @media (max-width: 400px) {
+            .nav-link {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+                gap: 4px;
+                min-height: 34px;
+            }
+            
+            .nav-link i {
+                font-size: 0.75rem;
+                width: 14px;
+            }
+        }
+        
+        /* Fade Hint - Shows when scrollable */
+        .nav-fade-hint {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            pointer-events: none;
+            background: linear-gradient(to left, #ffffff 15%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 0 12px 12px 0;
+            z-index: 5;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-fade-hint {
+                opacity: 0.85;
+            }
+        }
+
         button, a, input, select, textarea {
             touch-action: manipulation;
         }
@@ -622,132 +721,170 @@
 </head>
 <body>
 
-    <!-- INVISIBLE BOTTOM BOUNDARY -->
-    <div id="footerBoundary" class="footer-boundary"></div>
-
-    <!-- MAIN WRAPPER -->
-    <div class="page-wrapper">
-        
-        <!-- ============================================================
-        HEADER / NAVIGATION - FREE SWIPING ON IPHONE
-        ============================================================ -->
-        <header class="flex flex-wrap items-center justify-between gap-3 mb-6 md:mb-8">
-            <a href="/" class="flex items-center gap-3 flex-shrink-0">
-                <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png" 
-                     alt="Sam" 
-                     class="header-logo-img"
-                     loading="lazy">
-                <span class="text-xl md:text-2xl font-extrabold tracking-tight text-gray-800">
-                    <span class="text-blue-600">Betting</span>
-                    <span>Tool</span>
-                </span>
-            </a>
+    <!-- SINGLE SCROLL CONTAINER -->
+    <div class="scroll-container" id="scrollContainer">
+        <div class="main-wrapper">
             
-            <!-- Navigation - FREE TO SWIPE LEFT/RIGHT -->
-            <div class="nav-wrapper flex-1 md:flex-initial">
-                <nav class="nav-links" id="mainNav">
-                    <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Dashboard</a>
-                    <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">Calculator</a>
-                    <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">Bet Log</a>
-                    <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">Analysis</a>
-                </nav>
-                <div class="nav-fade-hint" id="navFadeHint"></div>
-            </div>
-        </header>
-
-        <!-- ============================================================
-        TOAST MESSAGES
-        ============================================================ -->
-        <div class="toast-container" id="toastContainer">
-            {% if messages %}
-                {% for message in messages %}
-                <div class="toast {% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
-                    <div class="toast-icon">
-                        <i class="fas {% if message.tags == 'success' %}fa-check{% elif message.tags == 'error' %}fa-exclamation{% else %}fa-info{% endif %}"></i>
+            <div class="page-wrapper">
+                
+                <!-- ============================================================
+                HEADER - With New World-Class Navigation
+                ============================================================ -->
+                <header class="flex flex-wrap items-center justify-between gap-4 mb-6 md:mb-8">
+                    <!-- Logo -->
+                    <a href="/" class="flex items-center gap-3 flex-shrink-0">
+                        <img src="https://ncctazjcffmpuniwctkz.supabase.co/storage/v1/object/public/user-uploads/Sam%20sam.png" 
+                             alt="Sam" 
+                             class="header-logo-img"
+                             loading="lazy">
+                        <span class="text-xl md:text-2xl font-extrabold tracking-tight text-gray-800">
+                            <span class="text-blue-600">Betting</span>
+                            <span>Tool</span>
+                        </span>
+                    </a>
+                    
+                    <!-- World-Class Navigation -->
+                    <div class="nav-container flex-1 md:flex-initial min-w-0">
+                        <div class="nav-wrapper relative">
+                            <nav class="nav-links" id="mainNav">
+                                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                                <a href="/calculator/" class="nav-link {% if '/calculator' in request.path %}active{% endif %}">
+                                    <i class="fas fa-calculator"></i>
+                                    <span>Calculator</span>
+                                </a>
+                                <a href="/bet-log/" class="nav-link {% if '/bet-log' in request.path %}active{% endif %}">
+                                    <i class="fas fa-list-ul"></i>
+                                    <span>Bet Log</span>
+                                </a>
+                                <a href="/analysis/" class="nav-link {% if '/analysis' in request.path %}active{% endif %}">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Analysis</span>
+                                </a>
+                            </nav>
+                            <div class="nav-fade-hint" id="navFadeHint"></div>
+                        </div>
                     </div>
-                    <div class="toast-content">{{ message }}</div>
-                    <button class="toast-close" onclick="this.closest('.toast').classList.add('hide'); setTimeout(() => this.closest('.toast').remove(), 500);">
-                        <i class="fas fa-times"></i>
-                    </button>
+                </header>
+
+                <!-- TOAST MESSAGES -->
+                <div class="toast-container" id="toastContainer">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="toast {% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
+                            <div class="toast-icon">
+                                <i class="fas {% if message.tags == 'success' %}fa-check{% elif message.tags == 'error' %}fa-exclamation{% else %}fa-info{% endif %}"></i>
+                            </div>
+                            <div class="toast-content">{{ message }}</div>
+                            <button class="toast-close" onclick="this.closest('.toast').classList.add('hide'); setTimeout(() => this.closest('.toast').remove(), 500);">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
                 </div>
-                {% endfor %}
-            {% endif %}
+
+                <!-- FLOATING ADMIN BUTTON -->
+                <a href="/admin/" class="float-admin" title="Go to Admin Panel">
+                    <i class="fas fa-user-shield"></i>
+                </a>
+
+                <!-- MAIN CONTENT -->
+                <main>
+                    {% block content %}{% endblock %}
+                </main>
+
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="footer-bottom">
+                <p>© 2026 Betting Tool. <span class="text-gray-400">Bet with your head, not your heart.</span></p>
+            </footer>
+
         </div>
-
-        <!-- ============================================================
-        FLOATING ADMIN BUTTON
-        ============================================================ -->
-        <a href="/admin/" class="float-admin" title="Go to Admin Panel">
-            <i class="fas fa-user-shield"></i>
-        </a>
-
-        <!-- ============================================================
-        MAIN CONTENT
-        ============================================================ -->
-        <main>
-            {% block content %}{% endblock %}
-        </main>
-
     </div>
 
     <!-- ============================================================
-    FOOTER - Stays at the bottom bottom
-    ============================================================ -->
-    <footer class="footer-bottom">
-        <p>© 2026 Betting Tool. <span class="text-gray-400">Bet with your head, not your heart.</span></p>
-    </footer>
-
-    <!-- ============================================================
-    JAVASCRIPT
+    WORLD-CLASS JAVASCRIPT
     ============================================================ -->
     <script>
         (function() {
             // ============================================================
-            // BOTTOM BOUNDARY ONLY - NO SHAKE, NAVIGATION FREE
+            // WORLD-CLASS SCROLL CONTROL - ZERO SHAKE ON IPHONE
             // ============================================================
-            const footerBoundary = document.getElementById('footerBoundary');
+            const scrollContainer = document.getElementById('scrollContainer');
             
-            if (footerBoundary) {
-                window.addEventListener('scroll', function() {
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    const scrollHeight = document.documentElement.scrollHeight;
-                    const clientHeight = document.documentElement.clientHeight;
+            if (scrollContainer) {
+                let isScrolling = false;
+                
+                function enforceBoundaries() {
+                    if (!scrollContainer) return;
                     
-                    const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+                    const scrollTop = scrollContainer.scrollTop;
+                    const scrollHeight = scrollContainer.scrollHeight;
+                    const clientHeight = scrollContainer.clientHeight;
                     
-                    // Just a silent guardian - no visible indicators
-                    if (distanceFromBottom <= 50 && distanceFromBottom > 0) {
-                        // Boundary active but invisible
-                        footerBoundary.style.opacity = '0';
+                    if (scrollTop < 0) {
+                        scrollContainer.scrollTop = 0;
+                        return;
+                    }
+                    
+                    if (scrollTop + clientHeight > scrollHeight) {
+                        scrollContainer.scrollTop = Math.max(0, scrollHeight - clientHeight);
+                        return;
+                    }
+                }
+                
+                let touchStartY = 0;
+                let touchStartScrollTop = 0;
+                
+                scrollContainer.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                    touchStartScrollTop = scrollContainer.scrollTop;
+                }, { passive: true });
+                
+                scrollContainer.addEventListener('touchmove', function(e) {
+                    const currentY = e.touches[0].clientY;
+                    const deltaY = currentY - touchStartY;
+                    const currentScrollTop = scrollContainer.scrollTop;
+                    const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+                    
+                    if (currentScrollTop <= 0 && deltaY > 0) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    
+                    if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
+                        e.preventDefault();
+                        return false;
+                    }
+                }, { passive: false });
+                
+                scrollContainer.addEventListener('scroll', function() {
+                    if (!isScrolling) {
+                        window.requestAnimationFrame(function() {
+                            enforceBoundaries();
+                            isScrolling = false;
+                        });
+                        isScrolling = true;
                     }
                 }, { passive: true });
+                
+                window.addEventListener('resize', function() {
+                    enforceBoundaries();
+                }, { passive: true });
+                
+                enforceBoundaries();
+                
+                if ('ontouchstart' in window) {
+                    scrollContainer.style.WebkitOverflowScrolling = 'touch';
+                }
+                
+                console.log('✅ World-class scroll system active - ZERO SHAKE guaranteed!');
             }
 
-            // ============================================================
-            // PREVENT RUBBER BAND AT BOTTOM ONLY - WITHOUT LOCKING NAV
-            // ============================================================
-            let touchStartY = 0;
-            let touchStartScrollTop = 0;
-            
-            document.addEventListener('touchstart', function(e) {
-                touchStartY = e.touches[0].clientY;
-                touchStartScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            }, { passive: true });
-            
-            document.addEventListener('touchmove', function(e) {
-                const currentY = e.touches[0].clientY;
-                const deltaY = currentY - touchStartY;
-                const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                const maxScrollTop = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                
-                // ONLY prevent at bottom - NAV stays free at top and for swiping
-                if (currentScrollTop >= maxScrollTop - 1 && deltaY < 0) {
-                    e.preventDefault();
-                    return false;
-                }
-            }, { passive: false });
-
-            // Toast functions
             function dismissToast(toast) {
                 if (!toast || !toast.parentNode) return;
                 toast.classList.add('hide');
@@ -759,7 +896,6 @@
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-                // Auto-dismiss toasts
                 const toasts = document.querySelectorAll('.toast');
                 toasts.forEach(function(toast, index) {
                     const delay = 4500 + (index * 200);
@@ -777,9 +913,7 @@
                     });
                 });
 
-                // ============================================================
-                // NAVIGATION SWIPE - COMPLETELY FREE ON IPHONE
-                // ============================================================
+                // Navigation fade hint
                 const nav = document.getElementById('mainNav');
                 const fadeHint = document.getElementById('navFadeHint');
 
@@ -809,7 +943,7 @@
                     window.addEventListener('resize', updateFadeHint);
                 }
 
-                console.log('✅ Betting Tool loaded - Navigation swipes freely on iPhone!');
+                console.log('✅ World-class navigation loaded!');
             });
         })();
     </script>
